@@ -10,7 +10,14 @@ module.exports = function(app){
   })
 
   app.get(/lisignup2/, function(req, res){
-      res.send(urlParse('code',req.url))
+      const authorizationCode = urlParse('code',req.url)
+      app.post('https://www.linkedin.com/oauth/v2/accessToken', function (req, res){
+          req.body = configs.liRedirectURL2 + '?code=' + authorizationCode
+          req.headers = { 'Content-Type': 'application/x-www-form-urlencoded'}
+          res.send()
+          console.log('res ', res)
+      })
+      res.send()
   })
   app.post('/signup', Authentication.signup)
 }
