@@ -4,14 +4,14 @@ const urlParse = require('./utils/query_string_parser')
 const https = require('https')
 const request = require('request')
 //TODO create a controller for githubapi calls https://www.udemy.com/react-redux-tutorial/learn/v4/t/lecture/4755164
-
+const hostUrl = 'http://localhost:3090/'
 module.exports = function (app) {
-    app.get('/lisignup', function (req, res) {
-        res.redirect(301,
+    app.get('/signup', function (req, res) {
+        res.redirect(302,
             'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + configs.clientId + '&redirect_uri=' + configs.liRedirectURL + '&state=' + configs.liStateString )
     })
 
-    app.get(/lisignup2/, function (req, res) {
+    app.get(/signup_success/, function (req, res) {
         const authorizationCode = urlParse('code', req.url)
 
         const postBody = 'grant_type=authorization_code&code=' + authorizationCode + '&state=' + configs.liStateString + '&redirect_uri=' + configs.liRedirectURL + '&client_id=' + configs.clientId + '&client_secret=' + configs.clientSecret
@@ -47,7 +47,8 @@ module.exports = function (app) {
                         getResponseBody += chunk
                     })
                     dataRes.on('end', function () {
-                        res.send(JSON.parse(getResponseBody))
+                        console.log("userData :", JSON.parse(getResponseBody))
+                        res.redirect(302, hostUrl + 'account/'+ accessToken)
                     })
                 })
 
@@ -58,6 +59,8 @@ module.exports = function (app) {
         postReq.end()
 
     })
-    // app.post('/signup', Authentication.signup)
+    app.get('/account/:code', function (req, res) {
+        res.send(req.params.code)
+    })
 }
 
