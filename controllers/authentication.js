@@ -44,11 +44,12 @@ exports.signupSuccess = function(req, res){
                     getResponseBody += chunk
                 })
                 dataRes.on('end', function () {
-                    var userDataRes = JSON.parse(getResponseBody)
+                    console.log(getResponseBody)
+           /*         var userDataRes = JSON.parse(getResponseBody)
 
                     // see if a user with a linked id does exist
                     User.findOne({ linkedinId:userDataRes.id}, function (err, existingUser) {
-                        if(err){return next(err)}
+                        // if(err){return next(err)}
 
                         if(existingUser){
                             //update user records
@@ -60,15 +61,15 @@ exports.signupSuccess = function(req, res){
                             email     : userDataRes.email
                         })
                         user.save(function(err){
-                            if(err){return next(err)}
+                            // if(err){return next(err)}
                             res.redirect(302, hostUrl + 'account/newuser'+ accessToken)
                         })
                     })
-
+*/
 
                     //
 
-                    // res.redirect(302, hostUrl + 'account/'+ accessToken)
+                    res.redirect(302, hostUrl + 'account/'+ accessToken)
                 })
             })
 
