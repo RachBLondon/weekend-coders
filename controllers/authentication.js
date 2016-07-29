@@ -45,31 +45,23 @@ exports.signupSuccess = function(req, res){
                 })
                 dataRes.on('end', function () {
                     console.log(getResponseBody)
-           /*         var userDataRes = JSON.parse(getResponseBody)
+                    var userDataRes = JSON.parse(getResponseBody)
 
-                    // see if a user with a linked id does exist
-                    User.findOne({ linkedinId:userDataRes.id}, function (err, existingUser) {
-                        // if(err){return next(err)}
-
-                        if(existingUser){
-                            //update user records
-                            res.redirect(302, hostUrl + 'account/logedin'+ accessToken)
-                        }
-                        //if a user does not exist create and save user record
-                        const user = new User({
-                            linkedinId: userDataRes.id,
-                            email     : userDataRes.email
-                        })
-                        user.save(function(err){
-                            // if(err){return next(err)}
-                            res.redirect(302, hostUrl + 'account/newuser'+ accessToken)
-                        })
+                    const user = new User({
+                        linkedinId: userDataRes.id,
+                        emailAddress     : userDataRes.emailAddress,
+                        firstName : userDataRes.firstName,
+                        lastName : userDataRes.lastName,
+                        numConnections : userDataRes.numConnections,
+                        positions : userDataRes.positions,
+                        pictureURL : userDataRes.pictureURL
                     })
-*/
 
-                    //
+                    user.save(function(err){
+                        if(err){console.log(err) }
 
-                    res.redirect(302, hostUrl + 'account/'+ accessToken)
+                        res.redirect(302, hostUrl + 'account/'+ accessToken)
+                    })
                 })
             })
 

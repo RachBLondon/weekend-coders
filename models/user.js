@@ -3,8 +3,14 @@ const Schema = mongoose.Schema
 
 //Define our Model
 const userSchema = new Schema({
-    linkedinId : {type: String, unique: true},
-    email : { type:String, unique: true, lowercase: true }
+    linkedinId : {type: String},
+    emailAddress : { type:String, lowercase: true },
+    firstName : {type :String},
+    lastName : {type :String},
+    numConnections : {type :Number},
+    positions :{type: Object},
+    pictureURL: {type: String}
+
 })
 
 //Create Model class
