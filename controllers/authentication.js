@@ -1,18 +1,17 @@
-const https     = require('https')
-const User      = require('./../models/user')
-const urlParse  = require('./../utils/query_string_parser')
-const configs   = require('./../config')
-const hostUrl   = 'http://localhost:3090/'
+const https = require('https')
+const User = require('./../models/user')
+const urlParse = require('./../utils/query_string_parser')
+const configs = require('./../config')
+const hostUrl = 'http://localhost:3090/'
 
-exports.signup = function(req, res){
-        res.redirect(302,
-            'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + configs.clientId + '&redirect_uri=' + configs.liRedirectURL + '&state=' + configs.liStateString )
+exports.signup = function (req, res) {
+    res.redirect(302,
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + configs.clientId + '&redirect_uri=' + configs.liRedirectURL + '&state=' + configs.liStateString)
 }
 
-exports.signupSuccess = function(req, res){
+exports.signupSuccess = function (req, res) {
     const authorizationCode = urlParse('code', req.url)
     const postBody = 'grant_type=authorization_code&code=' + authorizationCode + '&state=' + configs.liStateString + '&redirect_uri=' + configs.liRedirectURL + '&client_id=' + configs.clientId + '&client_secret=' + configs.clientSecret
-    console.log('postBody :', postBody)
 
     var accessTokenPostOptions = {
         hostname: 'www.linkedin.com',
@@ -44,24 +43,38 @@ exports.signupSuccess = function(req, res){
                     getResponseBody += chunk
                 })
                 dataRes.on('end', function () {
-                    console.log(getResponseBody)
                     var userDataRes = JSON.parse(getResponseBody)
 
-                    const user = new User({
-                        linkedinId: userDataRes.id,
-                        emailAddress     : userDataRes.emailAddress,
-                        firstName : userDataRes.firstName,
-                        lastName : userDataRes.lastName,
-                        numConnections : userDataRes.numConnections,
-                        positions : userDataRes.positions,
-                        pictureURL : userDataRes.pictureURL
-                    })
+                    if (!userDataRes.errorCode) {
+                        User.findOne({linkedinId: userDataRes.id}, function (err, existingUser) {
 
-                    user.save(function(err){
-                        if(err){console.log(err) }
+                            if (err) {
+                                console.log(err)
+                            }
 
-                        res.redirect(302, hostUrl + 'account/'+ accessToken)
-                    })
+                            if (existingUser) {
+                                return res.redirect(302, hostUrl + 'account/' + accessToken)
+                            }
+
+                            const user = new User({
+                                linkedinId: userDataRes.id,
+                                emailAddress: userDataRes.emailAddress,
+                                firstName: userDataRes.firstName,
+                                lastName: userDataRes.lastName,
+                                numConnections: userDataRes.numConnections,
+                                positions: userDataRes.positions,
+                                pictureURL: userDataRes.pictureURL
+                            })
+
+                            user.save(function (err) {
+                                if (err) {
+                                    console.log(err)
+                                }
+
+                                return res.redirect(302, hostUrl + 'account/' + accessToken)
+                            })
+                        })
+                    }
                 })
             })
 
