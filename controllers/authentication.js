@@ -53,7 +53,7 @@ exports.signupSuccess = function (req, res) {
                             }
 
                             if (existingUser) {
-                                return res.redirect(302, hostUrl + 'account/' + accessToken)
+                                return res.redirect(302, hostUrl + 'account/' + userDataRes.id)
                             }
 
                             const user = new User({
@@ -71,7 +71,7 @@ exports.signupSuccess = function (req, res) {
                                     console.log(err)
                                 }
 
-                                return res.redirect(302, hostUrl + 'account/' + accessToken)
+                                return res.redirect(302, hostUrl + 'account/' + userDataRes.id)
                             })
                         })
                     }
