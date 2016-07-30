@@ -1,8 +1,24 @@
 const https = require('https')
+const bcrypt = require('bcrypt-node')
+const crypto = require('crypto')
 const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
 const configs = require('./../config')
 const hostUrl = 'http://localhost:3090/'
+
+
+//TODO find away to encrypt the api routes, encoded and hashed client secret can not be sent in url
+
+const generateSecret = function(){
+    return crypto.randomBytes(10).toString('hex')
+}
+
+const generateEncodedSecret = function(){
+    const salt = bcrypt.genSaltSync(10)
+    const randomStr = crypto.randomBytes(10).toString('hex')
+    return encodeURI(bcrypt.hashSync(randomStr, salt)).toString()
+}
+
 
 exports.signup = function (req, res) {
     res.redirect(302,
@@ -53,7 +69,11 @@ exports.signupSuccess = function (req, res) {
                             }
 
                             if (existingUser) {
-                                return res.redirect(302, hostUrl + 'account/' + userDataRes.id)
+                                //TODO add timestamp for each time a user logs in
+                                existingUser.logins.push( 'hello')
+                                console.log('account secret ', userDataRes.accountSecret)
+
+                                return res.redirect(302, hostUrl + 'account/'+ existingUser.accountSecret)
                             }
 
                             const user = new User({
@@ -64,15 +84,17 @@ exports.signupSuccess = function (req, res) {
                                 numConnections: userDataRes.numConnections,
                                 positions: userDataRes.positions,
                                 pictureURL: userDataRes.pictureURL,
-                                accountCreated : new Date().getTime()
+                                accountCreated : new Date().getTime(),
+                                accountSecret : generateSecret(),
+                                encodedAccountSecret : generateEncodedSecret(),
+                                logins: []
                             })
 
                             user.save(function (err) {
                                 if (err) {
                                     console.log(err)
                                 }
-
-                                return res.redirect(302, hostUrl + 'account/' + userDataRes.id)
+                                return res.redirect(302, hostUrl + 'account/' + userDataRes.accountSecret)
                             })
                         })
                     }
@@ -84,4 +106,6 @@ exports.signupSuccess = function (req, res) {
     });
     postReq.write(postBody)
     postReq.end()
+
+
 }

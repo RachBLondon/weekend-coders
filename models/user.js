@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const bcrypt = require('bcrypt-node')
 
 //Define our Model
 const userSchema = new Schema({
@@ -10,8 +11,13 @@ const userSchema = new Schema({
     numConnections : { type :Number },
     positions :{ type: Object },
     pictureURL: { type: String },
-    accountCreated: {type : Date }
+    accountCreated: { type : Date },
+    accountSecret : { type: String },
+    encodedAccountSecret : {type: String},
+    logins : { type : Array }
 })
+
+
 
 //Create Model class
 const ModelClass = mongoose.model('user', userSchema)
