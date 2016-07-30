@@ -9,5 +9,7 @@ module.exports = function (app) {
     app.get('/account/:code', function (req, res) {
         res.send(req.params.code)
     })
+    //app.get search githihub
+
 }
 
