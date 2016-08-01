@@ -13,5 +13,12 @@ module.exports = function (app) {
     // app.get('/github', Authentication.isAuthenticated, function(req, res){
     //     res.send('github app')
     // })
+
+
+    //TODO create signout route
+    // app.get('/signout', Authentication.signOut)
+    app.get('*', function(req, res){
+        res.status(404).send('Sorry not sure what happened there')
+    })
 }
 

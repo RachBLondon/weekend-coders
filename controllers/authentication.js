@@ -6,8 +6,8 @@ const hostUrl = 'http://localhost:3090/'
 const jwt = require('jwt-simple')
 
 
-const tokenForUser = function (user) {
-    return jwt.encode({sub: user.linkedinId}, configs.appSecret)
+const tokenForUser = function (user, linkedinAccessToken) {
+    return jwt.encode({sub: user.linkedinId, linkedinAccessToken}, configs.appSecret)
 }
 
 exports.signup = function (req, res) {
@@ -62,7 +62,7 @@ exports.signupSuccess = function (req, res) {
                                 //TODO add timestamp for each time a user logs in
                                 existingUser.logins.push('hello')
 
-                                res.cookie('appCookie', tokenForUser(existingUser))
+                                res.cookie('appCookie', tokenForUser(existingUser, accessToken))
                                 return res.redirect(302, hostUrl + 'account/')
                             }
 
@@ -82,7 +82,7 @@ exports.signupSuccess = function (req, res) {
                                 if (err) {
                                     console.log(err)
                                 }
-                                res.append('Set-Cookie', tokenForUser(existingUser))
+                                res.append('Set-Cookie', tokenForUser(existingUser, accessToken))
                                 return res.redirect(302, hostUrl + 'account/')
                             })
                         })
@@ -104,6 +104,8 @@ exports.isAuthenticated = function (req, res, next) {
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) return res.redirect(302, '/signup')
         req.user = existingUser
+        req.user.linkedinAccessToken = decodedToken.linkedinAccessToken
     })
     next()
 }
+

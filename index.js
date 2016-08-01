@@ -15,6 +15,7 @@ mongoose.connect('mongodb://localhost:auth/auth')
 // app.use(morgan('combined'))
 app.use(bodyParser.json({ type: '*/*'}))
 app.use(cookieParser())
+
 router(app)
 //Server Setup
 const port = process.env.PORT || 3090
