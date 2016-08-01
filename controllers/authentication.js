@@ -6,9 +6,8 @@ const hostUrl = 'http://localhost:3090/'
 const jwt = require('jwt-simple')
 
 
-const tokenForUser  = function(user){
-    const timestamp = new Date().getTime()
-    return jwt.encode({sub: user.id, iat: timestamp}, configs.appSecret)
+const tokenForUser = function (user) {
+    return jwt.encode({sub: user.linkedinId}, configs.appSecret)
 }
 
 exports.signup = function (req, res) {
@@ -61,9 +60,9 @@ exports.signupSuccess = function (req, res) {
 
                             if (existingUser) {
                                 //TODO add timestamp for each time a user logs in
-                                existingUser.logins.push( 'hello')
+                                existingUser.logins.push('hello')
 
-                                res.append('Set-Cookie', 'GHapp ' +tokenForUser(existingUser))
+                                res.cookie('appCookie', tokenForUser(existingUser))
                                 return res.redirect(302, hostUrl + 'account/')
                             }
 
@@ -75,7 +74,7 @@ exports.signupSuccess = function (req, res) {
                                 numConnections: userDataRes.numConnections,
                                 positions: userDataRes.positions,
                                 pictureURL: userDataRes.pictureURL,
-                                accountCreated : new Date().getTime(),
+                                accountCreated: new Date().getTime(),
                                 logins: []
                             })
 
@@ -83,7 +82,7 @@ exports.signupSuccess = function (req, res) {
                                 if (err) {
                                     console.log(err)
                                 }
-                                res.append('Set-Cookie', 'GHapp ' +tokenForUser(existingUser))
+                                res.append('Set-Cookie', tokenForUser(existingUser))
                                 return res.redirect(302, hostUrl + 'account/')
                             })
                         })
@@ -98,6 +97,13 @@ exports.signupSuccess = function (req, res) {
     postReq.end()
 }
 
-exports.generateJWT = function(req, res){
-    res.send('logged in ')
+exports.isAuthenticated = function (req, res, next) {
+    const token = req.cookies.appCookie
+    if (!token) return res.redirect(302, '/signup')
+    var decodedToken = jwt.decode(token, configs.appSecret)
+    User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
+        if (err || !existingUser) return res.redirect(302, '/signup')
+        req.user = existingUser
+    })
+    next()
 }
