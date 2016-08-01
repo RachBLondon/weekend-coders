@@ -1,24 +1,24 @@
 const Authentication = require('./controllers/authentication')
 const configs = require('./config')
-const urlParse = require('./utils/query_string_parser')
-//TODO create a controller for githubapi calls https://www.udemy.com/react-redux-tutorial/learn/v4/t/lecture/4755164
 
-module.exports = function(app){
-  app.get('/lisignup', function (req, res) {
-      res.redirect(301,
-          'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id='+ configs.clientId + '&redirect_uri='+ configs.liRedirectURL +'&state=' + configs.liStateString + '=r_emailaddress')
-  })
 
-  app.get(/lisignup2/, function(req, res){
-      const authorizationCode = urlParse('code',req.url)
-      app.post('https://www.linkedin.com/oauth/v2/accessToken', function (req, res){
-          req.body = configs.liRedirectURL2 + '?code=' + authorizationCode
-          req.headers = { 'Content-Type': 'application/x-www-form-urlencoded'}
-          res.send()
-          console.log('res ', res)
-      })
-      res.send()
-  })
-  app.post('/signup', Authentication.signup)
+
+module.exports = function (app) {
+    app.get('/signup', Authentication.signup)
+    app.get(/signup_success/, Authentication.signupSuccess)
+    //TODO in auth controller handle this route to set a jwt for this user as per tutorial
+    app.get('/account/', Authentication.isAuthenticated, function (req, res) {
+        res.send('logged in')
+    })
+    // app.get('/github', Authentication.isAuthenticated, function(req, res){
+    //     res.send('github app')
+    // })
+
+
+    //TODO create signout route
+    // app.get('/signout', Authentication.signOut)
+    app.get('*', function(req, res){
+        res.status(404).send('Sorry not sure what happened there')
+    })
 }
 
