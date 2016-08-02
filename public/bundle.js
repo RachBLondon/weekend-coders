@@ -46224,7 +46224,7 @@
 	      location: location,
 	      language: language
 	    });
-	    _axios2.default.get(ROOT_URL + '/github/test', { headers: { authorization: localStorage.getItem('token'), location: location, language: language }
+	    _axios2.default.get(ROOT_URL + '/github/test', { headers: { location: location, language: language }
 	    }).then(function (response) {
 	      var pagination = response.data.shift();
 	      //TODO Write a test for this

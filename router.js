@@ -14,8 +14,10 @@ module.exports = function (app) {
     app.get('/home', Home.homePage)
     app.get('/logout', Authentication.logout)
 
+    app.get('/github/test', Home.searchGithub)
+    app.get('/github/pagination', Home.pagination)
 
-    //TODO create signout route
+
     // app.get('/signout', Authentication.signOut)
     app.get('*', function(req, res){
         res.status(404).send('Sorry not sure what happened there')
