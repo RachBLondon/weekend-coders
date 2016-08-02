@@ -11,6 +11,7 @@ const tokenForUser = function (user, linkedinAccessToken) {
 }
 
 exports.signup = function (req, res) {
+    res.clearCookie('logOut')
     res.redirect(302,
         'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + configs.clientId + '&redirect_uri=' + configs.liRedirectURL + '&state=' + configs.liStateString)
 }
@@ -82,7 +83,7 @@ exports.signupSuccess = function (req, res) {
                                 if (err) {
                                     console.log(err)
                                 }
-                                res.append('Set-Cookie', tokenForUser(existingUser, accessToken))
+                                res.cookie('appCookie', tokenForUser(existingUser, accessToken))
                                 return res.redirect(302, hostUrl + 'account/')
                             })
                         })
@@ -99,13 +100,19 @@ exports.signupSuccess = function (req, res) {
 
 exports.isAuthenticated = function (req, res, next) {
     const token = req.cookies.appCookie
-    if (!token) return res.redirect(302, '/signup')
+    if (!token) return res.redirect(302, '/home')
     var decodedToken = jwt.decode(token, configs.appSecret)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
-        if (err || !existingUser) return res.redirect(302, '/signup')
+        if (err || !existingUser) return res.redirect(302, '/home')
         req.user = existingUser
         req.user.linkedinAccessToken = decodedToken.linkedinAccessToken
     })
     next()
+}
+
+exports.logout = function(req, res, next){
+    res.clearCookie('appCookie')
+    res.cookie('logOut', 'true')
+    return res.redirect(302, '/home')
 }
 
