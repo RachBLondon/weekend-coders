@@ -1,4 +1,5 @@
 const Authentication = require('./controllers/authentication')
+const Home = require('./controllers/home')
 const configs = require('./config')
 
 
@@ -10,9 +11,8 @@ module.exports = function (app) {
     app.get('/account/', Authentication.isAuthenticated, function (req, res) {
         res.send('logged in')
     })
-    // app.get('/github', Authentication.isAuthenticated, function(req, res){
-    //     res.send('github app')
-    // })
+    app.get('/home', Home.homePage)
+    app.get('/logout', Authentication.logout)
 
 
     //TODO create signout route
