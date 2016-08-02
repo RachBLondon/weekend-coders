@@ -15,6 +15,7 @@ mongoose.connect('mongodb://localhost:auth/auth')
 // app.use(morgan('combined'))
 app.use(bodyParser.json({ type: '*/*'}))
 app.use(cookieParser())
+app.use('/public', express.static(__dirname + '/public'))
 
 router(app)
 //Server Setup
