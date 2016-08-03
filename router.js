@@ -1,5 +1,6 @@
 const Authentication = require('./controllers/authentication')
-const Home = require('./controllers/github')
+const Github = require('./controllers/github')
+const Home   = require('./controllers/home')
 const configs = require('./config')
 
 
@@ -12,10 +13,11 @@ module.exports = function (app) {
         res.send('logged in')
     })
     app.get('/home', Home.homePage)
+    app.get('/github/', Authentication.isAuthenticated, Github.gitHubApp)
     app.get('/logout', Authentication.logout)
 
-    app.get('/github/search', Home.searchGithub)
-    app.get('/github/pagination', Home.pagination)
+    app.get('/github/search', Github.searchGithub)
+    app.get('/github/pagination', Github.pagination)
 
 
     // app.get('/signout', Authentication.signOut)

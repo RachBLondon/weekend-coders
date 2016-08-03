@@ -44,7 +44,7 @@ var done = function(error, results) {
     testRes.send(detailUserArray.concat(results))
 }
 
-exports.homePage = function (req, response) {
+exports.gitHubApp = function (req, response) {
     response.sendFile(path.join(__dirname, '../client/index.html'))
 }
 
