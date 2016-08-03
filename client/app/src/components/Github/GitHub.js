@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
+import {colors} from '../../constants/colors_blue'
 
 import * as actions from '../../actions'
 
@@ -12,7 +13,7 @@ import Pager from '../nav/pager'
 
 let numberUsersDisplayed = 0;
 
-const colorScheme =['#ffffff', '#998a7b','#d7e6ef', '#bfced3', '#aca497']
+const colorScheme = [ colors.c1, colors.c2, colors.c3, colors.c5, colors.c5]
 
 class GitHub extends Component {
 
@@ -28,8 +29,8 @@ class GitHub extends Component {
    let count = 0;
    return this.props.usersDetails.map(user =>{
       const userName = user.name ? user.name : user.login;
-      const hireStatus = user.hireable? "fa fa-check-circle": "fa fa-times";
-      const textColor = count%5 === 1 || count%5 === 4 ? '#ffffff' : '#998a7b';
+      const hireStatus = user.hireable? "fa fa-check-circle": "fa fa-times"
+      const textColor = colors.black
       const divStyle = {backgroundColor : colorScheme[count%5], color : textColor}
       count ++;
 

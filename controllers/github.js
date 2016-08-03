@@ -49,14 +49,12 @@ exports.gitHubApp = function (req, response) {
 }
 
 exports.searchGithub = function (req, res) {
-    // console.log("in searchGithub", req.headers)
     var language = req.headers.language;
     var location = req.headers.location;
     detailUserArray = [];
     testRes = res
     axios.get('https://api.github.com/search/users?q=+language:' + language + '+location:' + location)
         .then(response => {
-            // console.log("xxx", response)
             pagingationURLs(response)
             async.map(response.data.items, apiDeets, done);
         });
