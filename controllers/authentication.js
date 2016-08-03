@@ -63,7 +63,7 @@ exports.signupSuccess = function (req, res) {
                                 existingUser.logins.push('hello')
 
                                 res.cookie('appCookie', tokenForUser(existingUser, accessToken))
-                                return res.redirect(302, hostUrl + 'account/')
+                                return res.redirect(302, hostUrl + 'search')
                             }
 
                             const user = new User({
@@ -83,7 +83,7 @@ exports.signupSuccess = function (req, res) {
                                     console.log(err)
                                 }
                                 res.cookie('appCookie', tokenForUser(existingUser, accessToken))
-                                return res.redirect(302, hostUrl + 'account/')
+                                return res.redirect(302, hostUrl + 'search')
                             })
                         })
                     }
@@ -99,10 +99,10 @@ exports.signupSuccess = function (req, res) {
 
 exports.isAuthenticated = function (req, res, next) {
     const token = req.cookies.appCookie
-    if (!token) return res.redirect(302, '/home')
+    if (!token) return res.redirect(302, '/')
     var decodedToken = jwt.decode(token, configs.appSecret)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
-        if (err || !existingUser) return res.redirect(302, '/home')
+        if (err || !existingUser) return res.redirect(302, '/')
         req.user = existingUser
         req.user.linkedinAccessToken = decodedToken.linkedinAccessToken
     })
@@ -111,6 +111,6 @@ exports.isAuthenticated = function (req, res, next) {
 
 exports.logout = function(req, res, next){
     res.clearCookie('appCookie')
-    return res.redirect(302, '/home')
+    return res.redirect(302, '/')
 }
 

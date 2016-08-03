@@ -7,7 +7,6 @@ import reduxThunk from 'redux-thunk'
 import { AUTH_USER } from './actions/types'
 
 import App from './components/app'
-import Homepage from './components/Homepage/Homepage'
 import GitHub from './components/GitHub/GitHub'
 
 import rootReducer from './reducers'
@@ -34,8 +33,8 @@ export default function configureStore(initialState){
     <Provider store={store}>
       <Router history={browserHistory}>
         <Route path="/" component={App}>
-          <IndexRoute component={Homepage}/>
-          <Route path="search" component={GitHub} />
+          <IndexRoute component={GitHub}/>
+
         </Route>
       </Router>
     </Provider>
