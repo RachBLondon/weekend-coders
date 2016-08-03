@@ -16,7 +16,7 @@ export function fetchGithubMessage({location, language}){
           location,
           language
         })
-        axios.get(ROOT_URL + '/github/test',
+        axios.get(ROOT_URL + '/github/search',
         { headers: { location :location, language: language}
       }).then(response => {
         const pagination = response.data.shift()

@@ -106,7 +106,7 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _app2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _GitHub2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/home', component: _GitHub2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: '/github', component: _GitHub2.default })
 	    )
 	  )
 	), document.querySelector('.container'));
@@ -20453,7 +20453,7 @@
 	  33: 'PageUp',
 	  34: 'PageDown',
 	  35: 'End',
-	  36: 'Home',
+	  36: 'Github',
 	  37: 'ArrowLeft',
 	  38: 'ArrowUp',
 	  39: 'ArrowRight',
@@ -46224,7 +46224,7 @@
 	      location: location,
 	      language: language
 	    });
-	    _axios2.default.get(ROOT_URL + '/github/test', { headers: { location: location, language: language }
+	    _axios2.default.get(ROOT_URL + '/github/search', { headers: { location: location, language: language }
 	    }).then(function (response) {
 	      var pagination = response.data.shift();
 	      //TODO Write a test for this

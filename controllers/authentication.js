@@ -11,7 +11,6 @@ const tokenForUser = function (user, linkedinAccessToken) {
 }
 
 exports.signup = function (req, res) {
-    res.clearCookie('logOut')
     res.redirect(302,
         'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + configs.clientId + '&redirect_uri=' + configs.liRedirectURL + '&state=' + configs.liStateString)
 }
@@ -112,7 +111,6 @@ exports.isAuthenticated = function (req, res, next) {
 
 exports.logout = function(req, res, next){
     res.clearCookie('appCookie')
-    res.cookie('logOut', 'true')
     return res.redirect(302, '/home')
 }
 
