@@ -1,9 +1,6 @@
 const Authentication = require('./controllers/authentication')
 const Github = require('./controllers/github')
-const Home   = require('./controllers/home')
 const configs = require('./config')
-
-
 
 
 module.exports = function (app) {

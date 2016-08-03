@@ -34,7 +34,7 @@ export default function configureStore(initialState){
       <Router history={browserHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={GitHub}/>
-
+          <Route path="search" component={GitHub} />
         </Route>
       </Router>
     </Provider>
