@@ -1,5 +1,5 @@
 const Authentication = require('./controllers/authentication')
-const Home = require('./controllers/home')
+const Home = require('./controllers/github')
 const configs = require('./config')
 
 
@@ -14,7 +14,7 @@ module.exports = function (app) {
     app.get('/home', Home.homePage)
     app.get('/logout', Authentication.logout)
 
-    app.get('/github/test', Home.searchGithub)
+    app.get('/github/search', Home.searchGithub)
     app.get('/github/pagination', Home.pagination)
 
 
