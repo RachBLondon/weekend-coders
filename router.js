@@ -12,8 +12,8 @@ module.exports = function (app) {
     app.get('/account/', Authentication.isAuthenticated, function (req, res) {
         res.send('logged in')
     })
-    app.get('/home', Home.homePage)
-    app.get('/github/', Authentication.isAuthenticated, Github.gitHubApp)
+    // app.get('/', Github.gitHubApp)
+    // app.get('/github/', Authentication.isAuthenticated, Github.gitHubApp)
     app.get('/logout', Authentication.logout)
 
     app.get('/github/search', Github.searchGithub)
@@ -21,8 +21,6 @@ module.exports = function (app) {
 
 
     // app.get('/signout', Authentication.signOut)
-    app.get('*', function(req, res){
-        res.status(404).send('Sorry not sure what happened there')
-    })
+    app.get('*', Github.gitHubApp )
 }
 
