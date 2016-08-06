@@ -60,7 +60,18 @@ exports.signupSuccess = function (req, res) {
 
                             if (existingUser) {
                                 //TODO add timestamp for each time a user logs in
-                                existingUser.logins.push('hello')
+                                console.log("FJDHLAJDHF",existingUser.logins)
+                                // existingUser.logins.push('hello')
+
+                                User.findByIdAndUpdate(
+                                    existingUser._id,
+                                    {$push: {"logins": new Date().getTime()}},
+                                    {safe: true, upsert: true},
+                                    function(err, model) {
+                                       if(err){ console.log(err)}
+                                    }
+                                )
+                                console.log("FJDHLAJDHF",existingUser.logins)
 
                                 res.cookie('appCookie', tokenForUser(existingUser, accessToken))
                                 return res.redirect(302, hostUrl + 'search')
@@ -75,7 +86,7 @@ exports.signupSuccess = function (req, res) {
                                 positions: userDataRes.positions,
                                 pictureURL: userDataRes.pictureURL,
                                 accountCreated: new Date().getTime(),
-                                logins: []
+                                logins: [ new Date().getTime() ]
                             })
 
                             user.save(function (err) {
