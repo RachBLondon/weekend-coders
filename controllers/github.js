@@ -71,3 +71,7 @@ exports.pagination = function(req, res){
             async.map(response.data.items, apiDeets, done )
         })
 }
+
+exports.addToShortList = function (req, res) {
+
+}

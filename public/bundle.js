@@ -46272,7 +46272,7 @@
 	    c2: '#DDE6E9',
 	    c3: '#D7E6EF',
 	    c4: '#CEDADE',
-	    c5: '#E7EDEE',
+	    c5: '#BFCED3',
 	    black: '#525252',
 	    lightGrey: '#D3D3D3'
 	};
@@ -46344,6 +46344,12 @@
 	    });
 	  };
 	}
+
+	// export function addToShortlist(email, name, company) {
+	//     return function(dispatch){
+	//         // sent deets to api
+	//     }
+	// }
 
 /***/ },
 /* 709 */
