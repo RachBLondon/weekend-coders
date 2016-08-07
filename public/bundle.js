@@ -46345,12 +46345,6 @@
 	  };
 	}
 
-	// export function addToShortlist(email, name, company) {
-	//     return function(dispatch){
-	//         // sent deets to api
-	//     }
-	// }
-
 /***/ },
 /* 709 */
 /***/ function(module, exports, __webpack_require__) {
