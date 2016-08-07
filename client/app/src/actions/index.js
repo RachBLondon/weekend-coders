@@ -51,3 +51,8 @@ export function fetchPagination(data){
   }
 }
 
+export function addToShortlist(userName) {
+    return function(dispatch){
+        console.log(userName)
+    }
+}

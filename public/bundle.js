@@ -4748,7 +4748,7 @@
 	function inject() {
 	  if (alreadyInjected) {
 	    // TODO: This is currently true because these injections are shared between
-	    // the app and the server package. They should be built independently
+	    // the client and the server package. They should be built independently
 	    // and not share any injection state. Then this problem will be solved.
 	    return;
 	  }
@@ -20453,7 +20453,7 @@
 	  33: 'PageUp',
 	  34: 'PageDown',
 	  35: 'End',
-	  36: 'Github',
+	  36: 'Home',
 	  37: 'ArrowLeft',
 	  38: 'ArrowUp',
 	  39: 'ArrowRight',
@@ -21167,12 +21167,12 @@
 	        }
 
 	        var diffIndex = firstDifferenceIndex(normalizedMarkup, rootMarkup);
-	        var difference = ' (app) ' + normalizedMarkup.substring(diffIndex - 20, diffIndex + 20) + '\n (server) ' + rootMarkup.substring(diffIndex - 20, diffIndex + 20);
+	        var difference = ' (client) ' + normalizedMarkup.substring(diffIndex - 20, diffIndex + 20) + '\n (server) ' + rootMarkup.substring(diffIndex - 20, diffIndex + 20);
 
-	        !(container.nodeType !== DOC_NODE_TYPE) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'You\'re trying to render a component to the document using server rendering but the checksum was invalid. This usually means you rendered a different component type or props on the app from the one on the server, or your render() methods are impure. React cannot handle this case due to cross-browser quirks by rendering at the document root. You should look for environment dependent code in your components and ensure the props are the same app and server side:\n%s', difference) : _prodInvariant('42', difference) : void 0;
+	        !(container.nodeType !== DOC_NODE_TYPE) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'You\'re trying to render a component to the document using server rendering but the checksum was invalid. This usually means you rendered a different component type or props on the client from the one on the server, or your render() methods are impure. React cannot handle this case due to cross-browser quirks by rendering at the document root. You should look for environment dependent code in your components and ensure the props are the same client and server side:\n%s', difference) : _prodInvariant('42', difference) : void 0;
 
 	        if (process.env.NODE_ENV !== 'production') {
-	          process.env.NODE_ENV !== 'production' ? warning(false, 'React attempted to reuse markup in a container but the ' + 'checksum was invalid. This generally means that you are ' + 'using server rendering and the markup generated on the ' + 'server was not what the app was expecting. React injected ' + 'new markup to compensate which works but you have lost many ' + 'of the benefits of server rendering. Instead, figure out ' + 'why the markup being generated is different on the app ' + 'or server:\n%s', difference) : void 0;
+	          process.env.NODE_ENV !== 'production' ? warning(false, 'React attempted to reuse markup in a container but the ' + 'checksum was invalid. This generally means that you are ' + 'using server rendering and the markup generated on the ' + 'server was not what the client was expecting. React injected ' + 'new markup to compensate which works but you have lost many ' + 'of the benefits of server rendering. Instead, figure out ' + 'why the markup being generated is different on the client ' + 'or server:\n%s', difference) : void 0;
 	        }
 	      }
 	    }
@@ -21339,7 +21339,7 @@
 	var MOD = 65521;
 
 	// adler32 is not cryptographically strong, and is only used to sanity check that
-	// markup generated on the server matches the markup generated on the app.
+	// markup generated on the server matches the markup generated on the client.
 	// This implementation (a modified version of the SheetJS version) has been optimized
 	// for our use case, at the expense of conforming to the adler32 specification
 	// for non-ascii inputs.
@@ -43011,7 +43011,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -43055,132 +43055,138 @@
 	var colorScheme = [_colors_blue.colors.c1, _colors_blue.colors.c2, _colors_blue.colors.c3, _colors_blue.colors.c5, _colors_blue.colors.c5];
 
 	var GitHub = function (_Component) {
-	  _inherits(GitHub, _Component);
+	    _inherits(GitHub, _Component);
 
-	  function GitHub() {
-	    _classCallCheck(this, GitHub);
+	    function GitHub() {
+	        _classCallCheck(this, GitHub);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(GitHub).apply(this, arguments));
-	  }
-
-	  _createClass(GitHub, [{
-	    key: 'handleFormSubmit',
-	    value: function handleFormSubmit(_ref) {
-	      var language = _ref.language;
-	      var location = _ref.location;
-
-	      this.props.fetchGithubMessage({ language: language, location: location });
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(GitHub).apply(this, arguments));
 	    }
-	  }, {
-	    key: 'pagingation',
-	    value: function pagingation() {
-	      return this.props.usersDetails.length === 30 ? _react2.default.createElement(_pager2.default, { pagination: actions.fetchPagination, paginationCall: this.props.fetchPagination, pages: this.props.pagination.links }) : null;
-	    }
-	  }, {
-	    key: 'showUsers',
-	    value: function showUsers() {
-	      var count = 0;
-	      return this.props.usersDetails.map(function (user) {
-	        var userName = user.name ? user.name : user.login;
-	        var hireStatus = user.hireable ? "fa fa-check-circle" : "fa fa-times";
-	        var textColor = _colors_blue.colors.black;
-	        var divStyle = { backgroundColor: colorScheme[count % 5], color: textColor };
-	        count++;
 
-	        return _react2.default.createElement(_UserCard2.default, {
-	          key: count,
-	          userName: userName,
-	          hireStatus: hireStatus,
-	          textColor: textColor,
-	          divStyle: divStyle,
-	          avatar: user.avatar_url,
-	          location: user.location,
-	          followers: user.followers,
-	          repos: user.public_repos
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var handleSubmit = _props.handleSubmit;
-	      var _props$fields = _props.fields;
-	      var language = _props$fields.language;
-	      var location = _props$fields.location;
+	    _createClass(GitHub, [{
+	        key: 'handleFormSubmit',
+	        value: function handleFormSubmit(_ref) {
+	            var language = _ref.language;
+	            var location = _ref.location;
+
+	            this.props.fetchGithubMessage({ language: language, location: location });
+	        }
+	    }, {
+	        key: 'pagingation',
+	        value: function pagingation() {
+	            return this.props.usersDetails.length === 30 ? _react2.default.createElement(_pager2.default, { pagination: actions.fetchPagination, paginationCall: this.props.fetchPagination, pages: this.props.pagination.links }) : null;
+	        }
+	    }, {
+	        key: 'showUsers',
+	        value: function showUsers() {
+	            var _this2 = this;
+
+	            var count = 0;
+	            return this.props.usersDetails.map(function (user) {
+	                var userName = user.name ? user.name : user.login;
+	                var hireStatus = user.hireable ? "fa fa-check-circle" : "fa fa-times";
+	                var textColor = _colors_blue.colors.black;
+	                var divStyle = { backgroundColor: colorScheme[count % 5], color: textColor };
+	                count++;
+
+	                return _react2.default.createElement(_UserCard2.default, {
+	                    addToShortList: _this2.props.addToShortList,
+	                    key: count,
+	                    userName: userName,
+	                    hireStatus: hireStatus,
+	                    textColor: textColor,
+	                    divStyle: divStyle,
+	                    avatar: user.avatar_url,
+	                    location: user.location,
+	                    followers: user.followers,
+	                    repos: user.public_repos
+	                });
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props;
+	            var handleSubmit = _props.handleSubmit;
+	            var _props$fields = _props.fields;
+	            var language = _props$fields.language;
+	            var location = _props$fields.location;
 
 
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'form',
-	          { onSubmit: handleSubmit(this.handleFormSubmit.bind(this)) },
-	          _react2.default.createElement(
-	            'fieldset',
-	            { className: 'form-group' },
-	            _react2.default.createElement(
-	              'label',
-	              null,
-	              ' language: '
-	            ),
-	            _react2.default.createElement('input', _extends({}, language, { className: 'form-control' }))
-	          ),
-	          _react2.default.createElement(
-	            'fieldset',
-	            { className: 'form-group' },
-	            _react2.default.createElement(
-	              'label',
-	              null,
-	              ' Location: '
-	            ),
-	            _react2.default.createElement('input', _extends({}, location, { className: 'form-control' }))
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { action: 'submit', className: 'btn btn-primary' },
-	            'Sign in '
-	          )
-	        ),
-	        this.pagingation(),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'row' },
-	          this.showUsers()
-	        ),
-	        this.pagingation()
-	      );
-	    }
-	  }]);
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'form',
+	                    { onSubmit: handleSubmit(this.handleFormSubmit.bind(this)) },
+	                    _react2.default.createElement(
+	                        'fieldset',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            ' language: '
+	                        ),
+	                        _react2.default.createElement('input', _extends({}, language, { className: 'form-control' }))
+	                    ),
+	                    _react2.default.createElement(
+	                        'fieldset',
+	                        { className: 'form-group' },
+	                        _react2.default.createElement(
+	                            'label',
+	                            null,
+	                            ' Location: '
+	                        ),
+	                        _react2.default.createElement('input', _extends({}, location, { className: 'form-control' }))
+	                    ),
+	                    _react2.default.createElement(
+	                        'button',
+	                        { action: 'submit', className: 'btn btn-primary' },
+	                        'Sign in '
+	                    )
+	                ),
+	                this.pagingation(),
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'row' },
+	                    this.showUsers()
+	                ),
+	                this.pagingation()
+	            );
+	        }
+	    }]);
 
-	  return GitHub;
+	    return GitHub;
 	}(_react.Component);
 
 	function mapStateToProps(state) {
-	  return {
-	    usersDetails: state.usersDetails,
-	    pagination: state.langLoc.pagination
-	  };
+	    return {
+	        usersDetails: state.usersDetails,
+	        pagination: state.langLoc.pagination
+	    };
 	}
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  return {
-	    fetchGithubMessage: function fetchGithubMessage(_ref2) {
-	      var language = _ref2.language;
-	      var location = _ref2.location;
+	    return {
+	        fetchGithubMessage: function fetchGithubMessage(_ref2) {
+	            var language = _ref2.language;
+	            var location = _ref2.location;
 
-	      dispatch(actions.fetchGithubMessage({ language: language, location: location }));
-	    },
-	    fetchPagination: function fetchPagination(url) {
-	      dispatch(actions.fetchPagination(url));
-	    }
+	            dispatch(actions.fetchGithubMessage({ language: language, location: location }));
+	        },
+	        fetchPagination: function fetchPagination(url) {
+	            dispatch(actions.fetchPagination(url));
+	        },
+	        addToShortList: function addToShortList(userName, email) {
+	            dispatch(actions.addToShortlist(userName, email));
+	        }
 
-	  };
+	    };
 	};
 
 	exports.default = (0, _reduxForm.reduxForm)({
-	  form: 'search',
-	  fields: ['language', 'location']
+	    form: 'search',
+	    fields: ['language', 'location']
 	}, mapStateToProps, mapDispatchToProps)(GitHub);
 
 /***/ },
@@ -46288,6 +46294,7 @@
 	});
 	exports.fetchGithubMessage = fetchGithubMessage;
 	exports.fetchPagination = fetchPagination;
+	exports.addToShortlist = addToShortlist;
 
 	var _axios = __webpack_require__(709);
 
@@ -46345,11 +46352,11 @@
 	  };
 	}
 
-	// export function addToShortlist(email, name, company) {
-	//     return function(dispatch){
-	//         // sent deets to api
-	//     }
-	// }
+	function addToShortlist(userName) {
+	  return function (dispatch) {
+	    console.log(userName);
+	  };
+	}
 
 /***/ },
 /* 709 */
@@ -47531,7 +47538,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -47557,71 +47564,82 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var UserCard = function (_Component) {
-	  _inherits(UserCard, _Component);
+	    _inherits(UserCard, _Component);
 
-	  function UserCard() {
-	    _classCallCheck(this, UserCard);
+	    function UserCard() {
+	        _classCallCheck(this, UserCard);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(UserCard).apply(this, arguments));
-	  }
-
-	  _createClass(UserCard, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'col-md-4  c-user_cell', style: this.props.divStyle },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'row' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-xs-6' },
-	              _react2.default.createElement('img', { src: this.props.avatar, className: 'c-user_cell__img' }),
-	              _react2.default.createElement(
-	                'h4',
-	                null,
-	                this.props.userName
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                this.props.location
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Hireable: ',
-	                _react2.default.createElement('i', { className: this.props.hireStatus }),
-	                ' '
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'col-xs-6' },
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Follwers : ',
-	                this.props.followers
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Repos : ',
-	                this.props.repos
-	              )
-	            )
-	          )
-	        )
-	      );
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(UserCard).apply(this, arguments));
 	    }
-	  }]);
 
-	  return UserCard;
+	    _createClass(UserCard, [{
+	        key: 'handleClick',
+	        value: function handleClick(userName) {
+	            this.props.addToShortList(userName);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            // console.log(this.props)
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'col-md-4  c-user_cell', style: this.props.divStyle },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'row' },
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-xs-6' },
+	                            _react2.default.createElement('img', { src: this.props.avatar, className: 'c-user_cell__img' }),
+	                            _react2.default.createElement(
+	                                'h4',
+	                                null,
+	                                this.props.userName
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                this.props.location
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Hireable: ',
+	                                _react2.default.createElement('i', { className: this.props.hireStatus }),
+	                                ' '
+	                            )
+	                        ),
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'col-xs-6' },
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Follwers : ',
+	                                this.props.followers
+	                            ),
+	                            _react2.default.createElement(
+	                                'p',
+	                                null,
+	                                'Repos : ',
+	                                this.props.repos
+	                            ),
+	                            _react2.default.createElement(
+	                                'button',
+	                                { onClick: this.handleClick.bind(this, this.props.userName), className: 'btn btn-default', type: 'submit' },
+	                                'Add to short list'
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return UserCard;
 	}(_react.Component);
 
 	exports.default = UserCard;
