@@ -25,6 +25,7 @@ module.exports = function (app) {
             res.send(userMap)
         })
     })
+    app.post('/addToShortList', Github.addToShortList)
     app.get('*', Authentication.isAuthenticated, Github.gitHubApp )
 }
 

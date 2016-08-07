@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const shortListSchema = new Schema({
+    userName : {type: String, unique: true},
+    email: {type: String, unique:true}
+})
 
 //Define our Model
 const userSchema = new Schema({
@@ -12,7 +16,8 @@ const userSchema = new Schema({
     positions :{ type: Object },
     pictureURL: { type: String },
     accountCreated: { type : Date },
-    logins : { type : Array }
+    logins : { type : Array },
+    shortList : [shortListSchema]
 })
 
 

@@ -1,13 +1,14 @@
-var path = require('path')
-var axios = require('axios')
-var async = require('async')
-var request = require('request')
-var configs = require('./../config')
-var testRes
-var detailUserArray
+const path = require('path')
+const axios = require('axios')
+const async = require('async')
+const request = require('request')
+const configs = require('./../config')
+const User = require('./../models/user')
+let testRes
+let detailUserArray
 
 
-var pagingationURLs = function(response){
+const pagingationURLs = function(response){
     const pages ={}
     const rawPages = response.headers.link.split("<");
     rawPages.map(function(rawData, i){
@@ -27,11 +28,11 @@ var pagingationURLs = function(response){
         }
 
     })
-    var pagination = {links: pages}
+    const pagination = {links: pages}
     detailUserArray.push(pagination)
 }
 
-var apiDeets = function(userObj, callback){
+const apiDeets = function(userObj, callback){
     const getUrl = 'https://api.github.com/users/'+ userObj.login +'?access_token='+ configs.githubAccessToken
     axios.get(getUrl)
         .then(response =>{
@@ -39,7 +40,7 @@ var apiDeets = function(userObj, callback){
         });
 }
 
-var done = function(error, results) {
+const done = function(error, results) {
     // console.log("lll", results)
     testRes.send(detailUserArray.concat(results))
 }
@@ -49,8 +50,8 @@ exports.gitHubApp = function (req, response) {
 }
 
 exports.searchGithub = function (req, res) {
-    var language = req.headers.language;
-    var location = req.headers.location;
+    const language = req.headers.language;
+    const location = req.headers.location;
     detailUserArray = [];
     testRes = res
     axios.get('https://api.github.com/search/users?q=+language:' + language + '+location:' + location)
@@ -62,7 +63,7 @@ exports.searchGithub = function (req, res) {
 }
 
 exports.pagination = function(req, res){
-    var url = req.headers.url;
+    const url = req.headers.url;
     detailUserArray = [];
     testRes = res
     axios.get(url)
@@ -73,5 +74,8 @@ exports.pagination = function(req, res){
 }
 
 exports.addToShortList = function (req, res) {
+    console.log(req.body)
+    //TODO find login users
 
+    //check if req.body.githubId exists in User.shorlisedUser
 }

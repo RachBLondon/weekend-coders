@@ -43083,7 +43083,7 @@
 
 	            var count = 0;
 	            return this.props.usersDetails.map(function (user) {
-	                var userName = user.name ? user.name : user.login;
+	                var displayUserName = user.name ? user.name : user.login;
 	                var hireStatus = user.hireable ? "fa fa-check-circle" : "fa fa-times";
 	                var textColor = _colors_blue.colors.black;
 	                var divStyle = { backgroundColor: colorScheme[count % 5], color: textColor };
@@ -43092,13 +43092,10 @@
 	                return _react2.default.createElement(_UserCard2.default, {
 	                    addToShortList: _this2.props.addToShortList,
 	                    key: count,
-	                    userName: userName,
-	                    hireStatus: hireStatus,
+	                    displayUserName: displayUserName,
 	                    textColor: textColor,
 	                    divStyle: divStyle,
-	                    avatar: user.avatar_url,
-	                    location: user.location,
-	                    followers: user.followers,
+	                    user: user,
 	                    repos: user.public_repos
 	                });
 	            });
@@ -46290,7 +46287,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.fetchGithubMessage = fetchGithubMessage;
 	exports.fetchPagination = fetchPagination;
@@ -46310,52 +46307,63 @@
 
 	//TODO rename this function
 	function fetchGithubMessage(_ref) {
-	  var location = _ref.location;
-	  var language = _ref.language;
+	    var location = _ref.location;
+	    var language = _ref.language;
 
-	  return function (dispatch) {
-	    dispatch({
-	      type: _types.SET_LOCATION_LANG,
-	      location: location,
-	      language: language
-	    });
-	    _axios2.default.get(ROOT_URL + '/github/search', { headers: { location: location, language: language }
-	    }).then(function (response) {
-	      var pagination = response.data.shift();
-	      //TODO Write a test for this
-	      var lastPage = pagination.links.last.split('page=')[1];
-	      dispatch({
-	        type: _types.SHOW_USER_DATA,
-	        pagination: pagination,
-	        payload: response.data,
-	        lastPage: lastPage
-	      });
-	    }).catch(function (response) {
-	      console.log(response);
-	    });
-	  };
+	    return function (dispatch) {
+	        dispatch({
+	            type: _types.SET_LOCATION_LANG,
+	            location: location,
+	            language: language
+	        });
+	        _axios2.default.get(ROOT_URL + '/github/search', {
+	            headers: { location: location, language: language }
+	        }).then(function (response) {
+	            var pagination = response.data.shift();
+	            //TODO Write a test for this
+	            var lastPage = pagination.links.last.split('page=')[1];
+	            dispatch({
+	                type: _types.SHOW_USER_DATA,
+	                pagination: pagination,
+	                payload: response.data,
+	                lastPage: lastPage
+	            });
+	        }).catch(function (response) {
+	            console.log(response);
+	        });
+	    };
 	}
 
 	function fetchPagination(data) {
-	  return function (dispatch) {
-	    _axios2.default.get(ROOT_URL + '/github/pagination', { headers: { url: data.url }
-	    }).then(function (response) {
-	      console.log(response);
-	      dispatch({
-	        type: _types.SHOW_USER_DATA,
-	        pagination: response.data.shift(),
-	        payload: response.data
-	      });
-	    }).catch(function (response) {
-	      console.log(response);
-	    });
-	  };
+	    return function (dispatch) {
+	        _axios2.default.get(ROOT_URL + '/github/pagination', {
+	            headers: { url: data.url }
+	        }).then(function (response) {
+	            console.log(response);
+	            dispatch({
+	                type: _types.SHOW_USER_DATA,
+	                pagination: response.data.shift(),
+	                payload: response.data
+	            });
+	        }).catch(function (response) {
+	            console.log(response);
+	        });
+	    };
 	}
 
-	function addToShortlist(userName) {
-	  return function (dispatch) {
-	    console.log(userName);
-	  };
+	function addToShortlist(user) {
+	    return function (dispatch) {
+	        console.log("inaction ", user);
+	        _axios2.default.post("/addToShortList", {
+	            userName: user.login,
+	            email: user.email,
+	            githubId: user.id
+	        }).then(function (response) {
+	            console.log(response);
+	        }).catch(function (error) {
+	            console.log(error);
+	        });
+	    };
 	}
 
 /***/ },
@@ -47574,8 +47582,8 @@
 
 	    _createClass(UserCard, [{
 	        key: 'handleClick',
-	        value: function handleClick(userName) {
-	            this.props.addToShortList(userName);
+	        value: function handleClick(user) {
+	            this.props.addToShortList(user);
 	        }
 	    }, {
 	        key: 'render',
@@ -47593,22 +47601,22 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'col-xs-6' },
-	                            _react2.default.createElement('img', { src: this.props.avatar, className: 'c-user_cell__img' }),
+	                            _react2.default.createElement('img', { src: this.props.user.avatar, className: 'c-user_cell__img' }),
 	                            _react2.default.createElement(
 	                                'h4',
 	                                null,
-	                                this.props.userName
+	                                this.props.displayUserName
 	                            ),
 	                            _react2.default.createElement(
 	                                'p',
 	                                null,
-	                                this.props.location
+	                                this.props.user.location
 	                            ),
 	                            _react2.default.createElement(
 	                                'p',
 	                                null,
 	                                'Hireable: ',
-	                                _react2.default.createElement('i', { className: this.props.hireStatus }),
+	                                _react2.default.createElement('i', { className: this.props.user.hireStatus }),
 	                                ' '
 	                            )
 	                        ),
@@ -47619,17 +47627,17 @@
 	                                'p',
 	                                null,
 	                                'Follwers : ',
-	                                this.props.followers
+	                                this.props.user.followers
 	                            ),
 	                            _react2.default.createElement(
 	                                'p',
 	                                null,
 	                                'Repos : ',
-	                                this.props.repos
+	                                this.props.user.repos
 	                            ),
 	                            _react2.default.createElement(
 	                                'button',
-	                                { onClick: this.handleClick.bind(this, this.props.userName), className: 'btn btn-default', type: 'submit' },
+	                                { onClick: this.handleClick.bind(this, this.props.user), className: 'btn btn-default', type: 'submit' },
 	                                'Add to short list'
 	                            )
 	                        )

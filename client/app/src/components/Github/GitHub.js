@@ -23,9 +23,10 @@ class GitHub extends Component {
     }
 
     showUsers(){
+
         let count = 0;
         return this.props.usersDetails.map(user =>{
-            const userName = user.name ? user.name : user.login;
+            const displayUserName = user.name ? user.name : user.login;
             const hireStatus = user.hireable? "fa fa-check-circle": "fa fa-times"
             const textColor = colors.black
             const divStyle = {backgroundColor : colorScheme[count%5], color : textColor}
@@ -35,13 +36,10 @@ class GitHub extends Component {
                 <UserCard
                     addToShortList={this.props.addToShortList}
                     key={count}
-                    userName={userName}
-                    hireStatus={hireStatus}
+                    displayUserName={displayUserName}
                     textColor={textColor}
                     divStyle={divStyle}
-                    avatar={user.avatar_url}
-                    location={user.location}
-                    followers={user.followers}
+                    user={user}
                     repos={user.public_repos}
                 />
             )
