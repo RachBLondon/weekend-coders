@@ -82,17 +82,17 @@ exports.addToShortList = function (req, res) {
     console.log('decoded', decodedToken.sub)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) return res.redirect(302, '/')
-        // console.log("existinguser", req.body)
-        // User.update(
-        //     {linkedId : existingUser.linkedinId},
-        //     {$set: {"shortList": req.body}},
-        //     {safe: true, upsert: true},
-        //     function(err, model) {
-        //         if(err){ console.log(err)}
-        //     }
-        // )
-            .select('shortList')
-            .exec(function(err, ))
+        console.log("existinguser", req.body)
+        User.findOneAndUpdate({linkedinId:existingUser.linkedinId},
+            {$addToSet: {shortList: req.body}},
+            function(err,data) {
+                if(err) {console.log(err)
+                    res.status(500).send("db error, data not saved")
+                } else {
+                    res.status(200).send('successfully saved')
+                }
+            }
+        )
 
     })
 
