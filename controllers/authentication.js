@@ -86,7 +86,8 @@ exports.signupSuccess = function (req, res) {
                                 positions: userDataRes.positions,
                                 pictureURL: userDataRes.pictureURL,
                                 accountCreated: new Date().getTime(),
-                                logins: [ new Date().getTime() ]
+                                logins: [ new Date().getTime() ],
+                                shortList:[]
                             })
 
                             user.save(function (err) {

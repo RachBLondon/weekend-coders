@@ -4,6 +4,8 @@ const async = require('async')
 const request = require('request')
 const configs = require('./../config')
 const User = require('./../models/user')
+const jwt = require('jwt-simple')
+
 let testRes
 let detailUserArray
 
@@ -74,8 +76,25 @@ exports.pagination = function(req, res){
 }
 
 exports.addToShortList = function (req, res) {
-    console.log(req.body)
-    //TODO find login users
+    const token = req.cookies.appCookie
+    if (!token) return res.redirect(302, '/')
+    var decodedToken = jwt.decode(token, configs.appSecret)
+    console.log('decoded', decodedToken.sub)
+    User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
+        if (err || !existingUser) return res.redirect(302, '/')
+        // console.log("existinguser", req.body)
+        // User.update(
+        //     {linkedId : existingUser.linkedinId},
+        //     {$set: {"shortList": req.body}},
+        //     {safe: true, upsert: true},
+        //     function(err, model) {
+        //         if(err){ console.log(err)}
+        //     }
+        // )
+            .select('shortList')
+            .exec(function(err, ))
+
+    })
 
     //check if req.body.githubId exists in User.shorlisedUser
 }
