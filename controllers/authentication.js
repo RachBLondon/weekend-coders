@@ -1,23 +1,24 @@
 const https = require('https')
 const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
-const configs = require('./../config')
+const env = require('env2')('config.env')
 const hostUrl = 'http://localhost:3090/'
 const jwt = require('jwt-simple')
 
 
+
 const tokenForUser = function (user, linkedinAccessToken) {
-    return jwt.encode({sub: user.linkedinId, linkedinAccessToken}, configs.appSecret)
+    return jwt.encode({sub: user.linkedinId, linkedinAccessToken}, process.env.appSecret)
 }
 
 exports.signup = function (req, res) {
     res.redirect(302,
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + configs.clientId + '&redirect_uri=' + configs.liRedirectURL + '&state=' + configs.liStateString)
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + process.env.clientId + '&redirect_uri=' + process.env.liRedirectURL + '&state=' + process.env.liStateString)
 }
 
 exports.signupSuccess = function (req, res) {
     const authorizationCode = urlParse('code', req.url)
-    const postBody = 'grant_type=authorization_code&code=' + authorizationCode + '&state=' + configs.liStateString + '&redirect_uri=' + configs.liRedirectURL + '&client_id=' + configs.clientId + '&client_secret=' + configs.clientSecret
+    const postBody = 'grant_type=authorization_code&code=' + authorizationCode + '&state=' + process.env.liStateString + '&redirect_uri=' + process.env.liRedirectURL + '&client_id=' + process.env.clientId + '&client_secret=' + process.env.clientSecret
 
     var accessTokenPostOptions = {
         hostname: 'www.linkedin.com',
@@ -111,7 +112,7 @@ exports.signupSuccess = function (req, res) {
 exports.isAuthenticated = function (req, res, next) {
     const token = req.cookies.appCookie
     if (!token) return res.redirect(302, '/')
-    var decodedToken = jwt.decode(token, configs.appSecret)
+    var decodedToken = jwt.decode(token, process.env.appSecret)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) return res.redirect(302, '/')
         req.user = existingUser
