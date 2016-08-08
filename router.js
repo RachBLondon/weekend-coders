@@ -1,6 +1,6 @@
 const Authentication = require('./controllers/authentication')
 const Github = require('./controllers/github')
-const configs = require('./config')
+
 const User = require('./models/user')
 
 

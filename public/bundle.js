@@ -79,7 +79,15 @@
 
 	var _GitHub2 = _interopRequireDefault(_GitHub);
 
-	var _reducers = __webpack_require__(729);
+	var _ShortList = __webpack_require__(729);
+
+	var _ShortList2 = _interopRequireDefault(_ShortList);
+
+	var _Profile = __webpack_require__(730);
+
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	var _reducers = __webpack_require__(731);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -106,7 +114,9 @@
 	      _reactRouter.Route,
 	      { path: '/', component: _app2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _GitHub2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: 'search', component: _GitHub2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: 'search', component: _GitHub2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: 'shortlist', component: _ShortList2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: 'profile', component: _Profile2.default })
 	    )
 	  )
 	), document.querySelector('.container'));
@@ -28849,7 +28859,7 @@
 /* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -28860,6 +28870,8 @@
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(203);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28879,23 +28891,49 @@
 	    }
 
 	    _createClass(Header, [{
-	        key: "render",
+	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
-	                "nav",
-	                { className: "navbar navbar-light" },
+	                'nav',
+	                { className: 'navbar navbar-light' },
 	                _react2.default.createElement(
-	                    "ul",
-	                    { className: "nav navbar-nav" },
+	                    'ul',
+	                    { className: 'nav navbar-nav' },
 	                    _react2.default.createElement(
-	                        "li",
-	                        { className: "nav-item" },
-	                        "Sign Out"
+	                        'li',
+	                        { className: 'nav-item' },
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: 'logout' },
+	                            'Sign Out'
+	                        )
 	                    ),
 	                    _react2.default.createElement(
-	                        "li",
-	                        { className: "nav-item" },
-	                        "Profile"
+	                        'li',
+	                        { className: 'nav-item' },
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: 'profile' },
+	                            'Profile'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'li',
+	                        { className: 'nav-item' },
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: 'shortlist' },
+	                            'Shortlist'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'li',
+	                        { className: 'nav-item' },
+	                        _react2.default.createElement(
+	                            _reactRouter.Link,
+	                            { to: 'search' },
+	                            'Search'
+	                        )
 	                    )
 	                )
 	            );
@@ -47800,6 +47838,104 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ShortList = function (_Component) {
+	    _inherits(ShortList, _Component);
+
+	    function ShortList() {
+	        _classCallCheck(this, ShortList);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ShortList).apply(this, arguments));
+	    }
+
+	    _createClass(ShortList, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                'This is a short list'
+	            );
+	        }
+	    }]);
+
+	    return ShortList;
+	}(_react.Component);
+
+	exports.default = ShortList;
+
+/***/ },
+/* 730 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ShortList = function (_Component) {
+	    _inherits(ShortList, _Component);
+
+	    function ShortList() {
+	        _classCallCheck(this, ShortList);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ShortList).apply(this, arguments));
+	    }
+
+	    _createClass(ShortList, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                'This is your profile'
+	            );
+	        }
+	    }]);
+
+	    return ShortList;
+	}(_react.Component);
+
+	exports.default = ShortList;
+
+/***/ },
+/* 731 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -47807,11 +47943,11 @@
 
 	var _reduxForm = __webpack_require__(662);
 
-	var _userdetail_reducer = __webpack_require__(730);
+	var _userdetail_reducer = __webpack_require__(732);
 
 	var _userdetail_reducer2 = _interopRequireDefault(_userdetail_reducer);
 
-	var _location_lang_reducer = __webpack_require__(731);
+	var _location_lang_reducer = __webpack_require__(733);
 
 	var _location_lang_reducer2 = _interopRequireDefault(_location_lang_reducer);
 
@@ -47826,7 +47962,7 @@
 	exports.default = rootReducer;
 
 /***/ },
-/* 730 */
+/* 732 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47849,7 +47985,7 @@
 	var _types = __webpack_require__(265);
 
 /***/ },
-/* 731 */
+/* 733 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

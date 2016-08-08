@@ -8,7 +8,8 @@ import { AUTH_USER } from './actions/types'
 
 import App from './components/app'
 import GitHub from './components/GitHub/GitHub'
-
+import ShortList from './components/shortlist/ShortList'
+import Profile from './components/profile/Profile'
 import rootReducer from './reducers'
 import DevTools from './components/DevTools'
 
@@ -35,6 +36,8 @@ export default function configureStore(initialState){
         <Route path="/" component={App}>
           <IndexRoute component={GitHub}/>
           <Route path="search" component={GitHub} />
+            <Route path="shortlist" component={ShortList} />
+            <Route path="profile" component={Profile} />
         </Route>
       </Router>
     </Provider>

@@ -2,7 +2,7 @@ const path = require('path')
 const axios = require('axios')
 const async = require('async')
 const request = require('request')
-const configs = require('./../config')
+const env = require('env2')('config.env')
 const User = require('./../models/user')
 const jwt = require('jwt-simple')
 
@@ -35,7 +35,7 @@ const pagingationURLs = function(response){
 }
 
 const apiDeets = function(userObj, callback){
-    const getUrl = 'https://api.github.com/users/'+ userObj.login +'?access_token='+ configs.githubAccessToken
+    const getUrl = 'https://api.github.com/users/'+ userObj.login +'?access_token='+ process.env.githubAccessToken
     axios.get(getUrl)
         .then(response =>{
             callback(null,response.data);
@@ -78,7 +78,7 @@ exports.pagination = function(req, res){
 exports.addToShortList = function (req, res) {
     const token = req.cookies.appCookie
     if (!token) return res.redirect(302, '/')
-    var decodedToken = jwt.decode(token, configs.appSecret)
+    var decodedToken = jwt.decode(token, process.env.appSecret)
     console.log('decoded', decodedToken.sub)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) return res.redirect(302, '/')
