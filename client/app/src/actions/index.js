@@ -2,7 +2,8 @@ import axios from 'axios';
 import {browserHistory} from 'react-router';
 import {
     SHOW_USER_DATA,
-    SET_LOCATION_LANG
+    SET_LOCATION_LANG,
+    SHOW_SHORTLIST
 } from './types';
 
 const ROOT_URL = 'http://localhost:3090';
@@ -41,7 +42,6 @@ export function fetchPagination(data) {
         axios.get(ROOT_URL + '/github/pagination', {
             headers: {url: data.url}
         }).then(response => {
-            console.log(response);
             dispatch({
                 type: SHOW_USER_DATA,
                 pagination: response.data.shift(),
@@ -55,15 +55,32 @@ export function fetchPagination(data) {
 
 export function addToShortlist(user) {
     return function (dispatch) {
-        console.log("inaction ", user)
         axios.post("/addToShortList", {
             userName: user.login,
             email: user.email,
             githubId:user.id
         }).then(function (response) {
-            console.log(response);
+            //TODO notify user of success
+            console.log(response)
         }).catch(function (error) {
+            //TODO notify user of error
             console.log(error);
+        })
+    }
+}
+
+export function getShortList() {
+    console.log('in get shortlist')
+    return function(dispatch){
+        axios.get('/getshortlist')
+            .then(response=>{
+                dispatch({
+                    type : SHOW_SHORTLIST,
+                    shortlist : response
+                })
+            }).catch(function (error) {
+            //TODO notify user of error
+            console.log(error)
         })
     }
 }

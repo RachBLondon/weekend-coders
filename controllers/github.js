@@ -79,7 +79,6 @@ exports.addToShortList = function (req, res) {
     const token = req.cookies.appCookie
     if (!token) return res.redirect(302, '/')
     var decodedToken = jwt.decode(token, process.env.appSecret)
-    console.log('decoded', decodedToken.sub)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) return res.redirect(302, '/')
         console.log("existinguser", req.body)
@@ -95,6 +94,15 @@ exports.addToShortList = function (req, res) {
         )
 
     })
-
     //check if req.body.githubId exists in User.shorlisedUser
+}
+
+exports.getShortList = function (req, res){
+    const token = req.cookies.appCookie
+    if (!token) return res.redirect(302, '/')
+    var decodedToken = jwt.decode(token, process.env.appSecret)
+    User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
+        if(err){res.status(500).send('unable to find user in db')}
+        res.json(existingUser.shortList)
+        })
 }

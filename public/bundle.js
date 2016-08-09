@@ -79,15 +79,15 @@
 
 	var _GitHub2 = _interopRequireDefault(_GitHub);
 
-	var _ShortList = __webpack_require__(729);
+	var _shortlist_container = __webpack_require__(729);
 
-	var _ShortList2 = _interopRequireDefault(_ShortList);
+	var _shortlist_container2 = _interopRequireDefault(_shortlist_container);
 
-	var _Profile = __webpack_require__(730);
+	var _profile_container = __webpack_require__(731);
 
-	var _Profile2 = _interopRequireDefault(_Profile);
+	var _profile_container2 = _interopRequireDefault(_profile_container);
 
-	var _reducers = __webpack_require__(731);
+	var _reducers = __webpack_require__(733);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -115,8 +115,8 @@
 	      { path: '/', component: _app2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _GitHub2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: 'search', component: _GitHub2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: 'shortlist', component: _ShortList2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: 'profile', component: _Profile2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: 'shortlist', component: _shortlist_container2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: 'profile', component: _profile_container2.default })
 	    )
 	  )
 	), document.querySelector('.container'));
@@ -28795,6 +28795,7 @@
 	var GET_USER_DATA = exports.GET_USER_DATA = 'get_user_data';
 	var SHOW_USER_DATA = exports.SHOW_USER_DATA = 'show_user_data';
 	var SET_LOCATION_LANG = exports.SET_LOCATION_LANG = 'set_location_lang';
+	var SHOW_SHORTLIST = exports.SHOW_SHORTLIST = 'show_shortlist';
 
 /***/ },
 /* 266 */
@@ -46330,6 +46331,7 @@
 	exports.fetchGithubMessage = fetchGithubMessage;
 	exports.fetchPagination = fetchPagination;
 	exports.addToShortlist = addToShortlist;
+	exports.getShortList = getShortList;
 
 	var _axios = __webpack_require__(709);
 
@@ -46377,7 +46379,6 @@
 	        _axios2.default.get(ROOT_URL + '/github/pagination', {
 	            headers: { url: data.url }
 	        }).then(function (response) {
-	            console.log(response);
 	            dispatch({
 	                type: _types.SHOW_USER_DATA,
 	                pagination: response.data.shift(),
@@ -46391,14 +46392,30 @@
 
 	function addToShortlist(user) {
 	    return function (dispatch) {
-	        console.log("inaction ", user);
 	        _axios2.default.post("/addToShortList", {
 	            userName: user.login,
 	            email: user.email,
 	            githubId: user.id
 	        }).then(function (response) {
+	            //TODO notify user of success
 	            console.log(response);
 	        }).catch(function (error) {
+	            //TODO notify user of error
+	            console.log(error);
+	        });
+	    };
+	}
+
+	function getShortList() {
+	    console.log('in get shortlist');
+	    return function (dispatch) {
+	        _axios2.default.get('/getshortlist').then(function (response) {
+	            dispatch({
+	                type: _types.SHOW_SHORTLIST,
+	                shortlist: response
+	            });
+	        }).catch(function (error) {
+	            //TODO notify user of error
 	            console.log(error);
 	        });
 	    };
@@ -47847,6 +47864,64 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _ShortList = __webpack_require__(730);
+
+	var _ShortList2 = _interopRequireDefault(_ShortList);
+
+	var _reactRedux = __webpack_require__(175);
+
+	var _actions = __webpack_require__(708);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var shortListContainer = function (_Component) {
+	    _inherits(shortListContainer, _Component);
+
+	    function shortListContainer() {
+	        _classCallCheck(this, shortListContainer);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(shortListContainer).apply(this, arguments));
+	    }
+
+	    _createClass(shortListContainer, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.props.getShortList();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(_ShortList2.default, null);
+	        }
+	    }]);
+
+	    return shortListContainer;
+	}(_react.Component);
+
+	exports.default = (0, _reactRedux.connect)(null, { getShortList: _actions.getShortList })(shortListContainer);
+
+/***/ },
+/* 730 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47881,7 +47956,62 @@
 	exports.default = ShortList;
 
 /***/ },
-/* 730 */
+/* 731 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(175);
+
+	var _Profile = __webpack_require__(732);
+
+	var _Profile2 = _interopRequireDefault(_Profile);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var profileContainer = function (_Component) {
+	    _inherits(profileContainer, _Component);
+
+	    function profileContainer() {
+	        _classCallCheck(this, profileContainer);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(profileContainer).apply(this, arguments));
+	    }
+
+	    _createClass(profileContainer, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(_Profile2.default, null)
+	            );
+	        }
+	    }]);
+
+	    return profileContainer;
+	}(_react.Component);
+
+	exports.default = (0, _reactRedux.connect)(null, {})(profileContainer);
+
+/***/ },
+/* 732 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47930,7 +48060,7 @@
 	exports.default = ShortList;
 
 /***/ },
-/* 731 */
+/* 733 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47943,26 +48073,31 @@
 
 	var _reduxForm = __webpack_require__(662);
 
-	var _userdetail_reducer = __webpack_require__(732);
+	var _userdetail_reducer = __webpack_require__(734);
 
 	var _userdetail_reducer2 = _interopRequireDefault(_userdetail_reducer);
 
-	var _location_lang_reducer = __webpack_require__(733);
+	var _location_lang_reducer = __webpack_require__(735);
 
 	var _location_lang_reducer2 = _interopRequireDefault(_location_lang_reducer);
+
+	var _shortlist = __webpack_require__(736);
+
+	var _shortlist2 = _interopRequireDefault(_shortlist);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var rootReducer = (0, _redux.combineReducers)({
 	  form: _reduxForm.reducer,
 	  langLoc: _location_lang_reducer2.default,
+	  shortlist: _shortlist2.default,
 	  usersDetails: _userdetail_reducer2.default
 	});
 
 	exports.default = rootReducer;
 
 /***/ },
-/* 732 */
+/* 734 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47985,7 +48120,7 @@
 	var _types = __webpack_require__(265);
 
 /***/ },
-/* 733 */
+/* 735 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48007,6 +48142,31 @@
 	      return _extends({}, state, { pagination: action.pagination });
 	  }
 	  return state;
+	};
+
+	var _types = __webpack_require__(265);
+
+/***/ },
+/* 736 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	exports.default = function () {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _types.SHOW_SHORTLIST:
+	            return _extends({}, state, { shortlist: action.shortlist.data });
+	    }
+	    return state;
 	};
 
 	var _types = __webpack_require__(265);

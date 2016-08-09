@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import Profile from 'profile'
+import { connect } from 'react-redux'
+import Profile from './Profile'
 
 class profileContainer extends Component {
 
@@ -10,4 +11,4 @@ class profileContainer extends Component {
         )
     }
 }
-export default profileContainer
+export default connect(null, {}) (profileContainer)

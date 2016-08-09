@@ -1,13 +1,16 @@
 import React, {Component} from 'react'
-import ShortList from 'ShortList'
+import ShortList from './ShortList'
+import { connect } from 'react-redux'
+import {getShortList} from './../../actions'
+
 
 class shortListContainer extends Component {
+    componentWillMount(){
+        this.props.getShortList()
+    }
 
     render() {
-        return ( <div>
-                <ShortList/>
-            </div>
-        )
+        return (<ShortList  />)
     }
 }
-export default shortListContainer
+export default connect(null, {getShortList})(shortListContainer)
