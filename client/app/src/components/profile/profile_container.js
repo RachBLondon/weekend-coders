@@ -21,7 +21,7 @@ class profileContainer extends Component {
 
 function mapStateToProps(state){
     return {
-      userprofile : state.usersDetails
+      userprofile : state.profile
     }
 }
 

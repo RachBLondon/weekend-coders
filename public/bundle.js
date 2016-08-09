@@ -48084,7 +48084,7 @@
 
 	function mapStateToProps(state) {
 	    return {
-	        userprofile: state.usersDetails
+	        userprofile: state.profile
 	    };
 	}
 
@@ -48161,16 +48161,21 @@
 
 	var _location_lang_reducer2 = _interopRequireDefault(_location_lang_reducer);
 
-	var _shortlist = __webpack_require__(736);
+	var _shortlist_reducer = __webpack_require__(736);
 
-	var _shortlist2 = _interopRequireDefault(_shortlist);
+	var _shortlist_reducer2 = _interopRequireDefault(_shortlist_reducer);
+
+	var _profile_reducer = __webpack_require__(737);
+
+	var _profile_reducer2 = _interopRequireDefault(_profile_reducer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var rootReducer = (0, _redux.combineReducers)({
 	  form: _reduxForm.reducer,
 	  langLoc: _location_lang_reducer2.default,
-	  shortlist: _shortlist2.default,
+	  shortlist: _shortlist_reducer2.default,
+	  profile: _profile_reducer2.default,
 	  usersDetails: _userdetail_reducer2.default
 	});
 
@@ -48187,11 +48192,11 @@
 	});
 
 	exports.default = function () {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case _types.LOAD_PROFILE:
+	    case _types.SHOW_USER_DATA:
 	      return action.payload;
 	  }
 	  return state;
@@ -48243,6 +48248,29 @@
 	    switch (action.type) {
 	        case _types.SHOW_SHORTLIST:
 	            return action.shortlist.data;
+	    }
+	    return state;
+	};
+
+	var _types = __webpack_require__(265);
+
+/***/ },
+/* 737 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports.default = function () {
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _types.LOAD_PROFILE:
+	            return action.payload;
 	    }
 	    return state;
 	};
