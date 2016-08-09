@@ -3,7 +3,8 @@ import {browserHistory} from 'react-router';
 import {
     SHOW_USER_DATA,
     SET_LOCATION_LANG,
-    SHOW_SHORTLIST
+    SHOW_SHORTLIST,
+    LOAD_PROFILE
 } from './types';
 
 const ROOT_URL = 'http://localhost:3090';
@@ -70,7 +71,6 @@ export function addToShortlist(user) {
 }
 
 export function getShortList() {
-    console.log('in get shortlist')
     return function(dispatch){
         axios.get('/getshortlist')
             .then(response=>{
@@ -82,5 +82,19 @@ export function getShortList() {
             //TODO notify user of error
             console.log(error)
         })
+    }
+}
+
+export function getProfile(){
+    return function(dispatch){
+        axios.get('/getprofile')
+            .then(response =>{
+                    dispatch({
+                        type: LOAD_PROFILE,
+                        payload : response.data
+                    })
+
+                console.log(response)
+            })
     }
 }

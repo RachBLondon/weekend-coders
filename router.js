@@ -1,5 +1,6 @@
 const Authentication = require('./controllers/authentication')
 const Github = require('./controllers/github')
+const Profile = require('./controllers/profile')
 
 const User = require('./models/user')
 
@@ -25,6 +26,7 @@ module.exports = function (app) {
             res.send(userMap)
         })
     })
+    app.get('/getprofile', Profile.getProfile)
     app.get('/getshortlist', Github.getShortList)
     app.post('/addToShortList', Github.addToShortList)
     app.get('*', Authentication.isAuthenticated, Github.gitHubApp )

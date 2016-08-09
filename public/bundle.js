@@ -28796,6 +28796,7 @@
 	var SHOW_USER_DATA = exports.SHOW_USER_DATA = 'show_user_data';
 	var SET_LOCATION_LANG = exports.SET_LOCATION_LANG = 'set_location_lang';
 	var SHOW_SHORTLIST = exports.SHOW_SHORTLIST = 'show_shortlist';
+	var LOAD_PROFILE = exports.LOAD_PROFILE = 'load_profile';
 
 /***/ },
 /* 266 */
@@ -46332,6 +46333,7 @@
 	exports.fetchPagination = fetchPagination;
 	exports.addToShortlist = addToShortlist;
 	exports.getShortList = getShortList;
+	exports.getProfile = getProfile;
 
 	var _axios = __webpack_require__(709);
 
@@ -46407,7 +46409,6 @@
 	}
 
 	function getShortList() {
-	    console.log('in get shortlist');
 	    return function (dispatch) {
 	        _axios2.default.get('/getshortlist').then(function (response) {
 	            dispatch({
@@ -46417,6 +46418,19 @@
 	        }).catch(function (error) {
 	            //TODO notify user of error
 	            console.log(error);
+	        });
+	    };
+	}
+
+	function getProfile() {
+	    return function (dispatch) {
+	        _axios2.default.get('/getprofile').then(function (response) {
+	            dispatch({
+	                type: _types.LOAD_PROFILE,
+	                payload: response.data
+	            });
+
+	            console.log(response);
 	        });
 	    };
 	}
@@ -48027,6 +48041,8 @@
 
 	var _Profile2 = _interopRequireDefault(_Profile);
 
+	var _actions = __webpack_require__(708);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48045,6 +48061,14 @@
 	    }
 
 	    _createClass(profileContainer, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            if (!this.props.userprofile) {
+	                console.log('get usersprofile');
+	                this.props.getProfile();
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -48058,7 +48082,13 @@
 	    return profileContainer;
 	}(_react.Component);
 
-	exports.default = (0, _reactRedux.connect)(null, {})(profileContainer);
+	function mapStateToProps(state) {
+	    return {
+	        userprofile: state.usersDetails
+	    };
+	}
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { getProfile: _actions.getProfile })(profileContainer);
 
 /***/ },
 /* 732 */
@@ -48157,11 +48187,11 @@
 	});
 
 	exports.default = function () {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case _types.SHOW_USER_DATA:
+	    case _types.LOAD_PROFILE:
 	      return action.payload;
 	  }
 	  return state;
