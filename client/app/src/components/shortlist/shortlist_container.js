@@ -10,7 +10,11 @@ class shortListContainer extends Component {
     }
 
     render() {
-        return (<ShortList  />)
+        return (<ShortList shortlist={this.props.shortlist} />)
     }
 }
-export default connect(null, {getShortList})(shortListContainer)
+
+function mapStateToProps(state){
+    return {shortlist : state.shortlist}
+}
+export default connect(mapStateToProps, {getShortList})(shortListContainer)

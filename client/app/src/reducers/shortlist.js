@@ -3,11 +3,10 @@ import {
     SHOW_SHORTLIST
 } from '../actions/types'
 
-export default function(state = {}, action){
+export default function(state = [], action){
     switch(action.type){
-        case SHOW_SHORTLIST:
-    return {...state, shortlist: action.shortlist.data}
+            case SHOW_SHORTLIST:
+        return  action.shortlist.data
     }
     return state
-
 }

@@ -47897,20 +47897,23 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            return _react2.default.createElement(_ShortList2.default, null);
+	            return _react2.default.createElement(_ShortList2.default, { shortlist: this.props.shortlist });
 	        }
 	    }]);
 
 	    return shortListContainer;
 	}(_react.Component);
 
-	exports.default = (0, _reactRedux.connect)(null, { getShortList: _actions.getShortList })(shortListContainer);
+	function mapStateToProps(state) {
+	    return { shortlist: state.shortlist };
+	}
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { getShortList: _actions.getShortList })(shortListContainer);
 
 /***/ },
 /* 730 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -47940,12 +47943,59 @@
 	    }
 
 	    _createClass(ShortList, [{
-	        key: 'render',
+	        key: "buildShortList",
+	        value: function buildShortList(users) {
+	            return users.map(function (user, i) {
+	                console.log("user", user);
+	                return _react2.default.createElement(
+	                    "tr",
+	                    { key: i },
+	                    _react2.default.createElement(
+	                        "td",
+	                        null,
+	                        user.userName
+	                    ),
+	                    _react2.default.createElement(
+	                        "td",
+	                        null,
+	                        user.email
+	                    )
+	                );
+	            });
+	        }
+	    }, {
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
+	                "div",
 	                null,
-	                'This is a short list'
+	                _react2.default.createElement(
+	                    "table",
+	                    { className: "table" },
+	                    _react2.default.createElement(
+	                        "thead",
+	                        null,
+	                        _react2.default.createElement(
+	                            "tr",
+	                            null,
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Username"
+	                            ),
+	                            _react2.default.createElement(
+	                                "th",
+	                                null,
+	                                "Email"
+	                            )
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        "tbody",
+	                        null,
+	                        this.buildShortList(this.props.shortlist)
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -48156,15 +48206,13 @@
 	    value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	exports.default = function () {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	    var action = arguments[1];
 
 	    switch (action.type) {
 	        case _types.SHOW_SHORTLIST:
-	            return _extends({}, state, { shortlist: action.shortlist.data });
+	            return action.shortlist.data;
 	    }
 	    return state;
 	};
