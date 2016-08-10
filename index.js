@@ -10,7 +10,7 @@ const env = require('env2')('config.env')
 
 
 //DB Setup
-mongoose.connect(process.env.MONGOLAB_URI ||'mongodb://localhost:auth/auth')
+mongoose.connect(process.env.MONGOLAB_URI)
 
 //App Setup
 //middleware
