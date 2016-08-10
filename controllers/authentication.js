@@ -1,7 +1,7 @@
 const https = require('https')
 const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
-const env = require('env2')('config.env')
+const env = require('env2')('.env')
 const hostUrl = 'http://localhost:3090/'
 const jwt = require('jwt-simple')
 
