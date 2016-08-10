@@ -6,11 +6,11 @@ const cookieParser = require('cookie-parser')
 const app = express()
 const router = require('./router')
 const mongoose = require('mongoose')
-const env = require('env2')('config.env')
+const env = require('env2')('./config.env')
 
 
 //DB Setup
-mongoose.connect(process.env.MONGOLAB_URI)
+mongoose.connect(process.env.MONGOLAB_URI ||'mongodb://localhost:auth/auth')
 
 //App Setup
 //middleware
