@@ -47670,7 +47670,7 @@
 	                        _react2.default.createElement(
 	                            'div',
 	                            { className: 'col-xs-6' },
-	                            _react2.default.createElement('img', { src: this.props.user.avatar, className: 'c-user_cell__img' }),
+	                            _react2.default.createElement('img', { src: this.props.user.avatar_url, className: 'c-user_cell__img' }),
 	                            _react2.default.createElement(
 	                                'h4',
 	                                null,

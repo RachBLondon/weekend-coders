@@ -11,6 +11,7 @@ export default class ShortList extends Component {
                         </div>
                         <div className="col-md-10">
                             <h3>{this.props.profile.firstName + ' ' + this.props.profile.lastName}</h3>
+
                         </div>
                     </div>
                 </div>

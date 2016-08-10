@@ -13,7 +13,7 @@ class UserCard extends Component {
             <div  className="col-md-4  c-user_cell" style={this.props.divStyle}>
                 <div className="row">
                     <div className="col-xs-6">
-                        <img src={this.props.user.avatar} className="c-user_cell__img" />
+                        <img src={this.props.user.avatar_url} className="c-user_cell__img" />
                         <h4>{this.props.displayUserName}</h4>
                         <p>{this.props.user.location}</p>
                         <p>Hireable: <i className={this.props.user.hireStatus}></i> </p>
