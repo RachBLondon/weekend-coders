@@ -8,6 +8,9 @@
     "autoprefixer": "postcss --use autoprefixer --autoprefixer.browsers \"last 2 versions\" -r ./public/style.css",
     "start": "webpack && nodemon index.js"
   },
+  "engines": {
+    "node":6.3.1
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
