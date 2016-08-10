@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 
 
 //DB Setup
-mongoose.connect('mongodb://localhost:auth/auth')
+mongoose.connect(process.env.MONGOLAB_URI ||'mongodb://localhost:auth/auth')
 
 //App Setup
 //middleware
