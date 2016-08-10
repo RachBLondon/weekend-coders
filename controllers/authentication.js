@@ -8,6 +8,8 @@ const jwt = require('jwt-simple')
 
 
 const tokenForUser = function (user, linkedinAccessToken) {
+
+    //if user has a cookie but not in db this user = null, causing an error see https://github.com/RachBLondon/github_api_auth_refactor/issues/9
     return jwt.encode({sub: user.linkedinId, linkedinAccessToken}, process.env.appSecret)
 }
 
@@ -99,12 +101,13 @@ exports.signupSuccess = function (req, res) {
                             })
                         })
                     }
+                    //TODO send error to front end
                 })
             })
 
             getUserData.end()
         })
-    });
+    })
     postReq.write(postBody)
     postReq.end()
 }

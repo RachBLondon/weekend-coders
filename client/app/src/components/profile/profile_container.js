@@ -13,7 +13,10 @@ class profileContainer extends Component {
 
     render() {
         return ( <div>
-                <Profile/>
+                <Profile
+                    profile={this.props.profile}
+
+                />
             </div>
         )
     }
@@ -21,7 +24,7 @@ class profileContainer extends Component {
 
 function mapStateToProps(state){
     return {
-      userprofile : state.profile
+      profile : state.profile
     }
 }
 

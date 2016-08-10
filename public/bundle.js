@@ -48074,7 +48074,10 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_Profile2.default, null)
+	                _react2.default.createElement(_Profile2.default, {
+	                    profile: this.props.profile
+
+	                })
 	            );
 	        }
 	    }]);
@@ -48084,7 +48087,7 @@
 
 	function mapStateToProps(state) {
 	    return {
-	        userprofile: state.profile
+	        profile: state.profile
 	    };
 	}
 
@@ -48094,7 +48097,7 @@
 /* 732 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -48124,12 +48127,45 @@
 	    }
 
 	    _createClass(ShortList, [{
-	        key: 'render',
+	        key: "showProfile",
+	        value: function showProfile(profile) {
+	            if (profile) {
+	                return _react2.default.createElement(
+	                    "div",
+	                    { className: "panel-body" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "row" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "col-md-2" },
+	                            _react2.default.createElement("img", { src: this.props.profile.pictureURL, alt: "...", className: "img-circle" })
+	                        ),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "col-md-10" },
+	                            _react2.default.createElement(
+	                                "h3",
+	                                null,
+	                                this.props.profile.firstName + ' ' + this.props.profile.lastName
+	                            )
+	                        )
+	                    )
+	                );
+	            }
+	        }
+	    }, {
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                'This is your profile'
+	                "div",
+	                { className: "panel panel-default" },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "panel-heading" },
+	                    "Profile"
+	                ),
+	                this.showProfile(this.props.profile)
 	            );
 	        }
 	    }]);
