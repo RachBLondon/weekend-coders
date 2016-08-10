@@ -1,13 +1,16 @@
-var path = require('path')
-var axios = require('axios')
-var async = require('async')
-var request = require('request')
-var configs = require('./../config')
-var testRes
-var detailUserArray
+const path = require('path')
+const axios = require('axios')
+const async = require('async')
+const request = require('request')
+const env = require('env2')('config.env')
+const User = require('./../models/user')
+const jwt = require('jwt-simple')
+
+let testRes
+let detailUserArray
 
 
-var pagingationURLs = function(response){
+const pagingationURLs = function(response){
     const pages ={}
     const rawPages = response.headers.link.split("<");
     rawPages.map(function(rawData, i){
@@ -27,19 +30,19 @@ var pagingationURLs = function(response){
         }
 
     })
-    var pagination = {links: pages}
+    const pagination = {links: pages}
     detailUserArray.push(pagination)
 }
 
-var apiDeets = function(userObj, callback){
-    const getUrl = 'https://api.github.com/users/'+ userObj.login +'?access_token='+ configs.githubAccessToken
+const apiDeets = function(userObj, callback){
+    const getUrl = 'https://api.github.com/users/'+ userObj.login +'?access_token='+ process.env.githubAccessToken
     axios.get(getUrl)
         .then(response =>{
             callback(null,response.data);
         });
 }
 
-var done = function(error, results) {
+const done = function(error, results) {
     // console.log("lll", results)
     testRes.send(detailUserArray.concat(results))
 }
@@ -49,8 +52,8 @@ exports.gitHubApp = function (req, response) {
 }
 
 exports.searchGithub = function (req, res) {
-    var language = req.headers.language;
-    var location = req.headers.location;
+    const language = req.headers.language;
+    const location = req.headers.location;
     detailUserArray = [];
     testRes = res
     axios.get('https://api.github.com/search/users?q=+language:' + language + '+location:' + location)
@@ -62,7 +65,7 @@ exports.searchGithub = function (req, res) {
 }
 
 exports.pagination = function(req, res){
-    var url = req.headers.url;
+    const url = req.headers.url;
     detailUserArray = [];
     testRes = res
     axios.get(url)
@@ -73,5 +76,33 @@ exports.pagination = function(req, res){
 }
 
 exports.addToShortList = function (req, res) {
+    const token = req.cookies.appCookie
+    if (!token) return res.redirect(302, '/')
+    var decodedToken = jwt.decode(token, process.env.appSecret)
+    User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
+        if (err || !existingUser) return res.redirect(302, '/')
+        console.log("existinguser", req.body)
+        User.findOneAndUpdate({linkedinId:existingUser.linkedinId},
+            {$addToSet: {shortList: req.body}},
+            function(err,data) {
+                if(err) {console.log(err)
+                    res.status(500).send("db error, data not saved")
+                } else {
+                    res.status(200).send('successfully saved')
+                }
+            }
+        )
 
+    })
+    //check if req.body.githubId exists in User.shorlisedUser
+}
+
+exports.getShortList = function (req, res){
+    const token = req.cookies.appCookie
+    if (!token) return res.redirect(302, '/')
+    var decodedToken = jwt.decode(token, process.env.appSecret)
+    User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
+        if(err){res.status(500).send('unable to find user in db')}
+        res.json(existingUser.shortList)
+        })
 }

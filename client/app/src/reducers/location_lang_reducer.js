@@ -1,3 +1,4 @@
+'use strict'
 import {
         SET_LOCATION_LANG,
         SHOW_USER_DATA

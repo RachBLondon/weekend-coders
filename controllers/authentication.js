@@ -8,6 +8,8 @@ const jwt = require('jwt-simple')
 
 
 const tokenForUser = function (user, linkedinAccessToken) {
+
+    //if user has a cookie but not in db this user = null, causing an error see https://github.com/RachBLondon/github_api_auth_refactor/issues/9
     return jwt.encode({sub: user.linkedinId, linkedinAccessToken}, process.env.appSecret)
 }
 
@@ -61,7 +63,6 @@ exports.signupSuccess = function (req, res) {
 
                             if (existingUser) {
                                 //TODO add timestamp for each time a user logs in
-                                console.log("FJDHLAJDHF",existingUser.logins)
                                 // existingUser.logins.push('hello')
 
                                 User.findByIdAndUpdate(
@@ -72,11 +73,11 @@ exports.signupSuccess = function (req, res) {
                                        if(err){ console.log(err)}
                                     }
                                 )
-                                console.log("FJDHLAJDHF",existingUser.logins)
 
                                 res.cookie('appCookie', tokenForUser(existingUser, accessToken))
                                 return res.redirect(302, hostUrl + 'search')
                             }
+                            console.log("888",userDataRes)
 
                             const user = new User({
                                 linkedinId: userDataRes.id,
@@ -85,9 +86,10 @@ exports.signupSuccess = function (req, res) {
                                 lastName: userDataRes.lastName,
                                 numConnections: userDataRes.numConnections,
                                 positions: userDataRes.positions,
-                                pictureURL: userDataRes.pictureURL,
+                                pictureURL: userDataRes.pictureUrl,
                                 accountCreated: new Date().getTime(),
-                                logins: [ new Date().getTime() ]
+                                logins: [ new Date().getTime() ],
+                                shortList:[]
                             })
 
                             user.save(function (err) {
@@ -99,12 +101,13 @@ exports.signupSuccess = function (req, res) {
                             })
                         })
                     }
+                    //TODO send error to front end
                 })
             })
 
             getUserData.end()
         })
-    });
+    })
     postReq.write(postBody)
     postReq.end()
 }
