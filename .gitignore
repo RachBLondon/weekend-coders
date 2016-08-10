@@ -1,5 +1,4 @@
 node_modules
 config.js
-public/bundle.js
 config.env
 .env
