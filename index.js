@@ -11,7 +11,7 @@ const env = require('env2')('.env')
 
 const dbURI = process.env.MONGOLAB_URI || 'mongodb://localhost:auth/auth'
 //DB Setup
-mongoose.connect(dbURI)
+mongoose.connect('mongodb://heroku_wbxfbzxc:d70q3v4v24v4lvd1rehmccs2h1@ds153745.mlab.com:53745/heroku_wbxfbzxc')
 
 
 //App Setup
