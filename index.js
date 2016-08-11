@@ -13,6 +13,7 @@ const dbURI = process.env.MONGOLAB_URI || 'mongodb://localhost:auth/auth'
 //DB Setup
 mongoose.connect(dbURI)
 
+
 //App Setup
 //middleware
 // app.use(morgan('combined'))
