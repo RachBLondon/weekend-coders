@@ -47617,7 +47617,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var ROOT_URL = exports.ROOT_URL = 'http://localhost:5000';
+	var ROOT_URL = exports.ROOT_URL = 'http://infinite-tundra-59979.herokuapp.com';
 
 /***/ },
 /* 728 */
