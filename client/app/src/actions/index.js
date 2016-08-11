@@ -5,9 +5,10 @@ import {
     SET_LOCATION_LANG,
     SHOW_SHORTLIST,
     LOAD_PROFILE
-} from './types';
+} from './types'
+import {ROOT_URL} from './../constants/host_url'
 
-const ROOT_URL = 'http://localhost:3090';
+
 
 
 //TODO rename this function
@@ -24,7 +25,7 @@ export function fetchGithubMessage({location, language}) {
             }).then(response => {
             const pagination = response.data.shift()
             //TODO Write a test for this
-            const lastPage = pagination.links.last.split('page=')[1];
+            const lastPage = pagination.links.last.split('page=')[1]
             dispatch({
                 type: SHOW_USER_DATA,
                 pagination: pagination,

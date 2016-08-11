@@ -1,8 +1,8 @@
 const https = require('https')
 const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
-const env = require('env2')('config.env')
-const hostUrl = 'http://localhost:3090/'
+const env = require('env2')('.env')
+const hostUrl = 'http://localhost:5000/'
 const jwt = require('jwt-simple')
 
 
@@ -62,8 +62,7 @@ exports.signupSuccess = function (req, res) {
                             }
 
                             if (existingUser) {
-                                //TODO add timestamp for each time a user logs in
-                                // existingUser.logins.push('hello')
+                                console.log("host url ", hostUrl)
 
                                 User.findByIdAndUpdate(
                                     existingUser._id,
@@ -96,6 +95,7 @@ exports.signupSuccess = function (req, res) {
                                 if (err) {
                                     console.log(err)
                                 }
+                                console.log("host url2", hostUrl)
                                 res.cookie('appCookie', tokenForUser(existingUser, accessToken))
                                 return res.redirect(302, hostUrl + 'search')
                             })
@@ -128,4 +128,3 @@ exports.logout = function(req, res, next){
     res.clearCookie('appCookie')
     return res.redirect(302, '/')
 }
-

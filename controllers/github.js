@@ -2,7 +2,7 @@ const path = require('path')
 const axios = require('axios')
 const async = require('async')
 const request = require('request')
-const env = require('env2')('config.env')
+const env = require('env2')('.env')
 const User = require('./../models/user')
 const jwt = require('jwt-simple')
 
