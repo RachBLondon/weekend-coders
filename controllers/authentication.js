@@ -2,7 +2,7 @@ const https = require('https')
 const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
 const env = require('env2')('.env')
-const hostUrl = 'http://infinite-tundra-59979.herokuapp.com'
+const hostUrl = 'http://infinite-tundra-59979.herokuapp.com/'
 const jwt = require('jwt-simple')
 
 
