@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const env = require('env2')('.env')
 
 
-const dbURI = process.env.MONGOLAB_URI
+const dbURI = process.env.MONGODB_URI
 //DB Setup
 mongoose.connect(dbURI)
 
