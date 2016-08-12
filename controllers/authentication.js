@@ -27,7 +27,7 @@ exports.signupSuccess = function (req, res) {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         agent: false
-    };
+    }
 
     var postReq = https.request(accessTokenPostOptions, (postRes) => {
         var body = '';
@@ -92,7 +92,8 @@ exports.signupSuccess = function (req, res) {
                                 if (err) {
                                     console.log(err)
                                 }
-                                res.cookie('appCookie', tokenForUser(existingUser, accessToken))
+                                console.log('users', user)
+                                res.cookie('appCookie', tokenForUser(user, accessToken))
                                 return res.redirect(302,  '/search')
                             })
                         })
