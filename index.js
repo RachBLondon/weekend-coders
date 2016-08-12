@@ -13,7 +13,6 @@ const dbURI = process.env.MONGODB_URI
 //DB Setup
 mongoose.connect(dbURI)
 
-
 //App Setup
 //middleware
 // app.use(morgan('combined'))
