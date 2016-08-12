@@ -104,6 +104,7 @@
 
 	var store = configureStore({});
 
+	console.log("window", window, "hows", window.location.hostname);
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
@@ -47617,7 +47618,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var ROOT_URL = exports.ROOT_URL = 'http://localhost:5000';
+	var ROOT_URL = exports.ROOT_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : 'http://infinite-tundra-59979.herokuapp.com';
 
 /***/ },
 /* 728 */
