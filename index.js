@@ -11,7 +11,7 @@ const env = require('env2')('.env')
 
 const dbURI = process.env.MONGOLAB_URI || 'mongodb://localhost:auth/auth'
 //DB Setup
-mongoose.connect('mongodb://heroku_wbxfbzxc:d70q3v4v24v4lvd1rehmccs2h1@ds153745.mlab.com:53745/heroku_wbxfbzxc')
+mongoose.connect(dbURI)
 
 
 //App Setup
@@ -27,3 +27,4 @@ const port = process.env.PORT || 5000
 const server = http.createServer(app)
 server.listen(port)
 console.log('Server listing on :', port)
+console.log("ajshfdshg", process.env.LOCAL_HOST);

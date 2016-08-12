@@ -2,7 +2,6 @@ const https = require('https')
 const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
 const env = require('env2')('.env')
-const hostUrl = 'http://infinite-tundra-59979.herokuapp.com/'
 const jwt = require('jwt-simple')
 
 
@@ -62,7 +61,6 @@ exports.signupSuccess = function (req, res) {
                             }
 
                             if (existingUser) {
-                                console.log("host url ", hostUrl)
 
                                 User.findByIdAndUpdate(
                                     existingUser._id,
@@ -74,10 +72,9 @@ exports.signupSuccess = function (req, res) {
                                 )
 
                                 res.cookie('appCookie', tokenForUser(existingUser, accessToken))
-                                return res.redirect(302, hostUrl + 'search')
+                                //deleted process.env.HOST_URL as it was breaking
+                                return res.redirect(302,   '/search')
                             }
-                            console.log("888",userDataRes)
-
                             const user = new User({
                                 linkedinId: userDataRes.id,
                                 emailAddress: userDataRes.emailAddress,
@@ -95,9 +92,8 @@ exports.signupSuccess = function (req, res) {
                                 if (err) {
                                     console.log(err)
                                 }
-                                console.log("host url2", hostUrl)
                                 res.cookie('appCookie', tokenForUser(existingUser, accessToken))
-                                return res.redirect(302, hostUrl + 'search')
+                                return res.redirect(302,  '/search')
                             })
                         })
                     }
