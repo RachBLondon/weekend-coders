@@ -3,7 +3,7 @@ const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
 const env = require('env2')('.env')
 const jwt = require('jwt-simple')
-
+var Promise = require('es6-promise').Promise
 
 
 const tokenForUser = function (user, linkedinAccessToken) {
@@ -18,6 +18,8 @@ exports.signup = function (req, res) {
 }
 
 exports.signupSuccess = function (req, res) {
+    console.log('res1', res.req.originalUrl)
+    console.log("in signup sucess")
     const authorizationCode = urlParse('code', req.url)
     const postBody = 'grant_type=authorization_code&code=' + authorizationCode + '&state=' + process.env.liStateString + '&redirect_uri=' + process.env.liRedirectURL + '&client_id=' + process.env.clientId + '&client_secret=' + process.env.clientSecret
 
@@ -30,11 +32,21 @@ exports.signupSuccess = function (req, res) {
     }
 
     var postReq = https.request(accessTokenPostOptions, (postRes) => {
+        console.log('res2', res.req.originalUrl)
+
+        console.log("in postres")
         var body = '';
         postRes.on('data', function (chunk) {
+            console.log('res3', res.req.originalUrl)
+
+            console.log("in data on")
             body += chunk
         })
         postRes.on('end', function () {
+            console.log('res4', res.req.originalUrl)
+
+            console.log("in data END")
+
             var accessToken = JSON.parse(body).access_token
 
             var userDetails = {
@@ -46,57 +58,69 @@ exports.signupSuccess = function (req, res) {
             }
 
             var getUserData = https.request(userDetails, (dataRes)=> {
+                console.log('res5', res.req.originalUrl)
+
                 var getResponseBody = ''
                 dataRes.on('data', function (chunk) {
                     getResponseBody += chunk
                 })
                 dataRes.on('end', function () {
+                    console.log('res6', res.req.originalUrl)
+
                     var userDataRes = JSON.parse(getResponseBody)
 
                     if (!userDataRes.errorCode) {
-                        User.findOne({linkedinId: userDataRes.id}, function (err, existingUser) {
+                        console.log('res7', res.req.originalUrl)
+                        const  isUserInDb = User.findOne({linkedinId: userDataRes.id})
+                        isUserInDb.then(function(user){
+                            console.log('res8', res.req.originalUrl)
 
-                            if (err) {
-                                console.log(err)
+                            console.log("doc ", user)
+                            if(user){
+                                console.log('res9', res.req.originalUrl)
+
+                                //TODO find a way to save and update with out using save https://github.com/Automattic/mongoose/issues/3173
+                                // const updatingUser = User.findByIdAndUpdate(
+                                //             existingUser._id,
+                                //             {$push: {"logins": new Date().getTime()}},
+                                //             {safe: true, upsert: true},
+                                //             function(err, model) {
+                                //                if(err){ console.log(err)}
+                                //             }, )
+                                //             updatingUser.then(function(doc){
+                                //                 console.log('doc', doc)
+                                //                 console.log('res9b', res.req.originalUrl)
+
+                                                res.cookie('appCookie', tokenForUser(user, accessToken))
+                                                return res.redirect(302,   '/search')
+                                            // })
+                            } else {
+                                console.log('res10', res.req.originalUrl)
+
+                                const newUser = new User({
+                                            linkedinId: userDataRes.id,
+                                            emailAddress: userDataRes.emailAddress,
+                                            firstName: userDataRes.firstName,
+                                            lastName: userDataRes.lastName,
+                                            numConnections: userDataRes.numConnections,
+                                            positions: userDataRes.positions,
+                                            pictureURL: userDataRes.pictureUrl,
+                                            accountCreated: new Date().getTime(),
+                                            logins: [ new Date().getTime() ],
+                                            shortList:[]
+                                        })
+                                        const promise = newUser.save()
+
+                                        promise.then(function(savedUser){
+                                            console.log('res11', res.req.originalUrl)
+                                            console.log("doc :", doc, "user :", user)
+                                            res.cookie('appCookie', tokenForUser(savedUser, accessToken))
+                                            return res.redirect(302,  '/search')
+                                        })
+
                             }
-
-                            if (existingUser) {
-
-                                User.findByIdAndUpdate(
-                                    existingUser._id,
-                                    {$push: {"logins": new Date().getTime()}},
-                                    {safe: true, upsert: true},
-                                    function(err, model) {
-                                       if(err){ console.log(err)}
-                                    }
-                                )
-
-                                res.cookie('appCookie', tokenForUser(existingUser, accessToken))
-                                //deleted process.env.HOST_URL as it was breaking
-                                return res.redirect(302,   '/search')
-                            }
-                            const user = new User({
-                                linkedinId: userDataRes.id,
-                                emailAddress: userDataRes.emailAddress,
-                                firstName: userDataRes.firstName,
-                                lastName: userDataRes.lastName,
-                                numConnections: userDataRes.numConnections,
-                                positions: userDataRes.positions,
-                                pictureURL: userDataRes.pictureUrl,
-                                accountCreated: new Date().getTime(),
-                                logins: [ new Date().getTime() ],
-                                shortList:[]
-                            })
-
-                            user.save(function (err) {
-                                if (err) {
-                                    console.log(err)
-                                }
-                                console.log('users', user)
-                                res.cookie('appCookie', tokenForUser(user, accessToken))
-                                return res.redirect(302,  '/search')
-                            })
                         })
+
                     }
                     //TODO send error to front end
                 })
@@ -110,6 +134,7 @@ exports.signupSuccess = function (req, res) {
 }
 
 exports.isAuthenticated = function (req, res, next) {
+    console.log('in isAuthentcaded')
     const token = req.cookies.appCookie
     if (!token) return res.redirect(302, '/')
     var decodedToken = jwt.decode(token, process.env.appSecret)
