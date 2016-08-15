@@ -136,7 +136,10 @@ exports.signupSuccess = function (req, res) {
 exports.isAuthenticated = function (req, res, next) {
     console.log('137:>>>> in isAuthentcaded')
     const token = req.cookies.appCookie
-    if (!token) { console.log("139:>>>> no token")return res.redirect(302, '/')}
+    if (!token) {
+        console.log("139:>>>> no token");
+        return res.redirect(302, '/')
+    }
     var decodedToken = jwt.decode(token, process.env.appSecret)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) {
