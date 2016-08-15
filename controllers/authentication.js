@@ -133,22 +133,23 @@ exports.signupSuccess = function (req, res) {
     postReq.end()
 }
 
-exports.isAuthenticated = function (req, res, next) {
+exports.isAuthenticated = function (isAuthReq, isAuthRes, next) {
     console.log('137:>>>> in isAuthentcaded')
-    const token = req.cookies.appCookie
+    const token = isAuthReq.cookies.appCookie
     if (!token) {
         console.log("139:>>>> no token");
-        return res.redirect(302, '/')
+        return isAuthRes.redirect(302, '/')
     }
     var decodedToken = jwt.decode(token, process.env.appSecret)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) {
             console.log("in no existing user")
-            return res.redirect(302, '/')
+            
+            return isAuthRes.redirect(302, '/')
         }
         console.log('146:>>>> in exisiting user ^^^')
-        req.user = existingUser
-        req.user.linkedinAccessToken = decodedToken.linkedinAccessToken
+        isAuthReq.user = existingUser
+        isAuthReq.user.linkedinAccessToken = decodedToken.linkedinAccessToken
     })
     next()
 }
