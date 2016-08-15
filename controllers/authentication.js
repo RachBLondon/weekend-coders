@@ -13,13 +13,13 @@ const tokenForUser = function (user, linkedinAccessToken) {
 }
 
 exports.signup = function (req, res) {
+    console.log("16>>> in redirected to get LINKed auth")
     res.redirect(302,
         'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=' + process.env.clientId + '&redirect_uri=' + process.env.liRedirectURL + '&state=' + process.env.liStateString)
 }
 
 exports.signupSuccess = function (req, res) {
-    console.log('21:>>>> res1', res.req.originalUrl)
-    console.log("22:>>>> in signup sucess")
+    console.log('21:>>>> res1 in sign_up_succes url')
     const authorizationCode = urlParse('code', req.url)
     const postBody = 'grant_type=authorization_code&code=' + authorizationCode + '&state=' + process.env.liStateString + '&redirect_uri=' + process.env.liRedirectURL + '&client_id=' + process.env.clientId + '&client_secret=' + process.env.clientSecret
 
@@ -32,19 +32,13 @@ exports.signupSuccess = function (req, res) {
     }
 
     var postReq = https.request(accessTokenPostOptions, (postRes) => {
-        console.log('35:>>>> res2 no res')
-
-        console.log("37:>>>> in postres")
+        console.log("37:>>>> in post Token to Linkedin")
         var body = ''
         postRes.on('data', function (chunk) {
-            console.log('40:>>>> res3', res.req.originalUrl)
-
-            console.log("42:>>>> in data on")
+            console.log("42:>>>> in data on reciving data")
             body += chunk
         })
         postRes.on('end', function () {
-            console.log('46:>>>> res4', res.req.originalUrl)
-
             console.log("48:>>>> in data END")
 
             var accessToken = JSON.parse(body).access_token
@@ -58,26 +52,25 @@ exports.signupSuccess = function (req, res) {
             }
 
             var getUserData = https.request(userDetails, (dataRes)=> {
-                console.log('61:>>>> res5', res.req.originalUrl)
+                console.log('61:>>>> res5 request for userData from Linked')
 
                 var getResponseBody = ''
                 dataRes.on('data', function (chunk) {
                     getResponseBody += chunk
                 })
                 dataRes.on('end', function () {
-                    console.log('68:>>>> res6', res.req.originalUrl)
+                    console.log('68:>>>> res6 in end of reciving user data ')
 
                     var userDataRes = JSON.parse(getResponseBody)
 
                     if (!userDataRes.errorCode) {
-                        console.log('73:>>>> ', res.req.originalUrl)
+                        console.log('73:>>>>  There has been no error')
                         const  isUserInDb = User.findOne({linkedinId: userDataRes.id})
                         isUserInDb.then(function(user){
-                            console.log('76:>>>> res8', res.req.originalUrl)
+                            console.log('76:>>>> looked for user in db', user)
 
-                            console.log("78:>>>> doc ", user)
                             if(user){
-                                console.log('80:>>>> res9', res.req.originalUrl)
+                                console.log('80:>>>> user is in db')
 
                                 //TODO find a way to save and update with out using save https://github.com/Automattic/mongoose/issues/3173
                                 // const updatingUser = User.findByIdAndUpdate(
@@ -95,9 +88,9 @@ exports.signupSuccess = function (req, res) {
                                                 return res.redirect(302,   '/search')
                                             // })
                             } else {
-                                console.log('98:>>>> res10', res.req.originalUrl)
+                                console.log('98:>>>> user not in db, save new user :userdataObj', userDataRes)
 
-                                const newUser = new User({
+                                var newUser = new User({
                                             linkedinId: userDataRes.id,
                                             emailAddress: userDataRes.emailAddress,
                                             firstName: userDataRes.firstName,
@@ -109,11 +102,11 @@ exports.signupSuccess = function (req, res) {
                                             logins: [ new Date().getTime() ],
                                             shortList:[]
                                         })
-                                        const promise = newUser.save()
+                                        var promiseSave = newUser.save()
 
-                                        promise.then(function(savedUser){
-                                            console.log('115:>>>> res11', res.req.originalUrl, "savedUser", savedUser)
-                                            console.log("114:>>>> doc :", doc, "user :", user)
+                                        promiseSave.then(function(savedUser){
+                                            console.log('108  new user saved in db', savedUser)
+                                            console.log('115:>>>> just saved user res', res.req.originalUrl)
                                             res.cookie('appCookie', tokenForUser(savedUser, accessToken))
                                             return res.redirect(302,  '/search')
                                         })
