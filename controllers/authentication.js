@@ -138,7 +138,7 @@ exports.isAuthenticated = function (isAuthReq, isAuthRes, next) {
         if (err || !existingUser) {
             console.log("in no existing user")
             
-            return isAuthRes.redirect(302, '/')
+            isAuthRes.redirect(302, '/')
         }
         console.log('146:>>>> in exisiting user ^^^')
         isAuthReq.user = existingUser
