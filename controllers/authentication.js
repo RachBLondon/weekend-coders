@@ -102,9 +102,7 @@ exports.signupSuccess = function (req, res) {
                                             logins: [ new Date().getTime() ],
                                             shortList:[]
                                         })
-                                        var promiseSave = newUser.save()
-
-                                        promiseSave.then(function(savedUser){
+                                        newUser.save().then(function(savedUser){
                                             console.log('108  new user saved in db', savedUser)
                                             console.log('115:>>>> just saved user res', res.req.originalUrl)
                                             res.cookie('appCookie', tokenForUser(savedUser, accessToken))
