@@ -112,7 +112,7 @@ exports.signupSuccess = function (req, res) {
                                         const promise = newUser.save()
 
                                         promise.then(function(savedUser){
-                                            console.log('115:>>>> res11', res.req.originalUrl)
+                                            console.log('115:>>>> res11', res.req.originalUrl, "savedUser", savedUser)
                                             console.log("114:>>>> doc :", doc, "user :", user)
                                             res.cookie('appCookie', tokenForUser(savedUser, accessToken))
                                             return res.redirect(302,  '/search')
