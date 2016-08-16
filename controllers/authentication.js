@@ -71,22 +71,10 @@ exports.signupSuccess = function (req, res) {
 
                             if(user){
                                 console.log('80:>>>> user is in db')
-
                                 //TODO find a way to save and update with out using save https://github.com/Automattic/mongoose/issues/3173
-                                // const updatingUser = User.findByIdAndUpdate(
-                                //             existingUser._id,
-                                //             {$push: {"logins": new Date().getTime()}},
-                                //             {safe: true, upsert: true},
-                                //             function(err, model) {
-                                //                if(err){ console.log(err)}
-                                //             }, )
-                                //             updatingUser.then(function(doc){
-                                //                 console.log('doc', doc)
-                                //                 console.log('res9b', res.req.originalUrl)
+                                res.cookie('appCookie', tokenForUser(user, accessToken))
+                                return res.redirect(302,   '/search')
 
-                                                res.cookie('appCookie', tokenForUser(user, accessToken))
-                                                return res.redirect(302,   '/search')
-                                            // })
                             } else {
                                 console.log('98:>>>> user not in db, save new user :userdataObj', userDataRes)
 
@@ -107,6 +95,9 @@ exports.signupSuccess = function (req, res) {
                                             console.log('115:>>>> just saved user res', res.req.originalUrl)
                                             res.cookie('appCookie', tokenForUser(savedUser, accessToken))
                                             return res.redirect(302,  '/search')
+                                        }).catch(function(error){
+                                            console.log("errror in save ", error)
+                                            return res.send(500, "error saving to db")
                                         })
 
                             }
