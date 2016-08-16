@@ -20,12 +20,12 @@ app.use(morgan('combined'))
 app.use(bodyParser.json({ type: '*/*'}))
 app.use(cookieParser())
 app.use('/public', express.static(__dirname + '/public'))
-app.use(timeout(30000))
-app.use(haltOnTimedout)
-
-function haltOnTimedout(req, res, next){
-    return res.sendFile(__dirname + '/public/timeout.html')
-}
+// app.use(timeout(300000))
+// app.use(haltOnTimedout)
+//
+// function haltOnTimedout(req, res, next){
+//     return res.sendFile(__dirname + '/public/timeout.html')
+// }
 router(app)
 //Server Setup
 const port = process.env.PORT || 5000
