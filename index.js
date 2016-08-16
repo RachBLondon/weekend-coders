@@ -20,10 +20,11 @@ app.use(morgan('combined'))
 app.use(bodyParser.json({ type: '*/*'}))
 app.use(cookieParser())
 app.use('/public', express.static(__dirname + '/public'))
-app.use(timeout(30000))
+app.use(timeout(10))
+app.use(haltOnTimedout)
 
 function haltOnTimedout(req, res, next){
-    if (!req.timedout) next();
+    return res.sendFile(__dirname + '/public/timeout.html')
 }
 router(app)
 //Server Setup
