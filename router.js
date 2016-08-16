@@ -12,7 +12,9 @@ module.exports = function (app) {
     app.get('/', function(req, res){
         res.sendFile(__dirname + '/public/index.html')
     })
-    app.get('/logout', Authentication.logout)
+    app.get('/logout', Authentication.logout, function(req, res){
+        res.sendFile('logged out')
+    })
     app.get('/github/search', Github.searchGithub)
     app.get('/github/pagination', Github.pagination)
     app.get('/getprofile', Profile.getProfile)
