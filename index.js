@@ -7,6 +7,7 @@ const app = express()
 const router = require('./router')
 const mongoose = require('mongoose')
 const env = require('env2')('.env')
+const timeout = require('connect-timeout')
 
 
 const dbURI = process.env.MONGODB_URI
@@ -19,7 +20,11 @@ app.use(morgan('combined'))
 app.use(bodyParser.json({ type: '*/*'}))
 app.use(cookieParser())
 app.use('/public', express.static(__dirname + '/public'))
+app.use(timeout(30000))
 
+function haltOnTimedout(req, res, next){
+    if (!req.timedout) next();
+}
 router(app)
 //Server Setup
 const port = process.env.PORT || 5000
