@@ -15,6 +15,9 @@ class shortListContainer extends Component {
 }
 
 function mapStateToProps(state){
-    return {shortlist : state.shortlist}
+    return {
+        shortlist : state.shortlist,
+        profile : state.profile
+    }
 }
 export default connect(mapStateToProps, {getShortList})(shortListContainer)

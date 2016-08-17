@@ -5,8 +5,7 @@ import {getProfile} from './../../actions'
 
 class profileContainer extends Component {
     componentWillMount(){
-        if(!this.props.userprofile){
-            console.log('get usersprofile')
+        if(!this.props.profile){
             this.props.getProfile()
         }
     }
