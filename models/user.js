@@ -3,9 +3,9 @@ const Schema = mongoose.Schema
 
 const shortListSchema = new Schema({
     userName : {type: String},
-    email: {type: String, unique: true },
-    githubId :{type: Number, unique: true }
-}, {_id:false})
+    email: {type: String},
+    githubId :{type: Number}
+}
 
 //Define our Model
 const userSchema = new Schema({
