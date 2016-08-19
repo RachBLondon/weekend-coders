@@ -28965,6 +28965,7 @@
 	exports.fetchPagination = fetchPagination;
 	exports.addToShortlist = addToShortlist;
 	exports.getShortList = getShortList;
+	exports.getProfile = getProfile;
 
 	var _axios = __webpack_require__(269);
 
@@ -29049,6 +29050,19 @@
 	        }).catch(function (error) {
 	            //TODO notify user of error
 	            console.log(error);
+	        });
+	    };
+	}
+
+	function getProfile() {
+	    return function (dispatch) {
+	        _axios2.default.get('/getprofile').then(function (response) {
+	            dispatch({
+	                type: _types.LOAD_PROFILE,
+	                payload: response.data
+	            });
+
+	            console.log(response);
 	        });
 	    };
 	}

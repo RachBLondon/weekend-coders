@@ -86,4 +86,17 @@ export function getShortList() {
     }
 }
 
+export function getProfile(){
+    return function(dispatch){
+        axios.get('/getprofile')
+            .then(response =>{
+                dispatch({
+                    type: LOAD_PROFILE,
+                    payload : response.data
+                })
+
+                console.log(response)
+            })
+    }
+}
 
