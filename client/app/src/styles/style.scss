@@ -1,15 +1,52 @@
-$brand-light-blue: #88CFEE;
+$light-blue: #88CFEE;
+$dark-blue: #3C90CC;
+$orange: #F9A649;
+$darker-orange: #C67316;
+$off-white: #FDF5E6;
+$white: #FFFFFF;
+$short-list: #FFCCCC;
+$purple: #333366;
+$brand-font: 'Quicksand', sans-serif;
+$body-font: 'Open Sans', sans-serif;
+
 
 html {
   box-sizing: border-box;
-  background-color: $brand-light-blue;
+  font-family: $body-font;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
+.t-nav{
+  background-color: $white;
+  color: black;
+  .t-logo {
+    font-family: $brand-font;
+  }
+  .c-nav__item:hover{
+    background-color: $short-list;
+  }
+}
 
+.t-background-img {
+  background-color: $light-blue;
+  .t-bold{
+    font-weight: bold;
+  }
+  .t-cta{
+    background-color: $orange;
+  }
+  .t-cta:hover{
+    background-color: $darker-orange;
+  }
+}
+
+
+.t-icon {
+  w
+}
 
 
 
