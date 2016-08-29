@@ -32,6 +32,9 @@ html {
 
 .t-background-img {
   background-color: $light-blue;
+  padding-top: 4em;
+  padding-bottom: 6em;
+
   .t-bold{
     font-weight: bold;
   }
@@ -44,9 +47,21 @@ html {
 }
 
 
-.t-icon {
-  w
+.t-link {
+  color: white;
+  text-decoration: none;
+}
+.t-icon-section .o-image {
+  padding: 10% 20% 1% 20%
 }
 
+.t-icon-section {
+  text-align: center;
+}
 
-
+.t-footer {
+  background-color: $light-blue;
+  color: white;
+  text-align: center;
+  padding: 10% 7%;
+}
