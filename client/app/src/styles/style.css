@@ -40,4 +40,8 @@ html {
   text-align: center;
   padding: 10% 7%; }
 
+@media (min-width: 418px) {
+  .t-footer {
+    padding: 1% 7%; } }
+
 /*# sourceMappingURL=style.css.map */
