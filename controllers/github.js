@@ -43,7 +43,6 @@ const apiDeets = function(userObj, callback){
 }
 
 const done = function(error, results) {
-    // console.log("lll", results)
     testRes.send(detailUserArray.concat(results))
 }
 
@@ -81,9 +80,9 @@ exports.addToShortList = function (req, res) {
     var decodedToken = jwt.decode(token, process.env.appSecret)
     User.findOne({linkedinId: decodedToken.sub}, function (err, existingUser) {
         if (err || !existingUser) return res.redirect(302, '/')
-        console.log("existinguser", req.body)
         User.findOneAndUpdate({linkedinId:existingUser.linkedinId},
             {$addToSet: {shortList: req.body}},
+
             function(err,data) {
                 if(err) {console.log(err)
                     res.status(500).send("db error, data not saved")

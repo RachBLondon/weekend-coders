@@ -5,7 +5,7 @@ const shortListSchema = new Schema({
     userName : {type: String},
     email: {type: String},
     githubId :{type: Number}
-})
+}, { _id: false})
 
 //Define our Model
 const userSchema = new Schema({
