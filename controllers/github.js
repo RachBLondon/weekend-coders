@@ -35,7 +35,6 @@ const pagingationURLs = function(response){
 }
 
 const apiDeets = function(userObj, callback){
-    console.log(userObj)
     const getUrl = 'https://api.github.com/users/'+ userObj.login +'?access_token='+ process.env.githubAccessToken
     axios.get(getUrl)
         .then(response =>{
