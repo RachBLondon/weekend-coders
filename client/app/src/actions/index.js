@@ -71,20 +71,6 @@ export function addToShortlist(user) {
     }
 }
 
-export function getShortList() {
-    return function(dispatch){
-        axios.get('/getshortlist')
-            .then(response=>{
-                dispatch({
-                    type : SHOW_SHORTLIST,
-                    shortlist : response
-                })
-            }).catch(function (error) {
-            //TODO notify user of error
-            console.log(error)
-        })
-    }
-}
 
 export function getProfile(){
     return function(dispatch){

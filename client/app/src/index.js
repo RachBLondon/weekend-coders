@@ -8,8 +8,7 @@ import { AUTH_USER } from './actions/types';
 
 import App from './components/app';
 import GitHub from './components/GitHub/GitHub';
-import ShortListContainer from './components/shortlist/shortlist_container';
-import ProfileContainer from './components/Profile/profile_container';
+import ProfileContainer from './components/Profile/profile_container'
 import NoticeBoardContainer from './components/NoticeBoard/noticeboard_container';
 import AddProjectContainer from './components/AddProject/add_project_container';
 import rootReducer from './reducers';
@@ -38,7 +37,6 @@ console.log("window", window, "hows", window.location.hostname)
         <Route path="/" component={App}>
           <IndexRoute component={GitHub}/>
           <Route path="search" component={GitHub} />
-            <Route path="shortlist" component={ShortListContainer} />
             <Route path="profile" component={ProfileContainer} />
             <Route path="projects" component={NoticeBoardContainer}/>
             <Route path="addproject" component={AddProjectContainer}/>
