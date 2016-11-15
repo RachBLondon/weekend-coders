@@ -12,11 +12,8 @@ class profileContainer extends Component {
 
     render() {
         return ( <div>
-                <Profile
-                    profile={this.props.profile}
-
-                />
-            </div>
+                    <Profile profile={this.props.profile} />
+                </div>
         )
     }
 }
