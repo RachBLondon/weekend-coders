@@ -1,3 +1,4 @@
+'use strict'
 const path = require('path')
 const axios = require('axios')
 const async = require('async')
