@@ -29217,6 +29217,7 @@
 	  value: true
 	});
 	var LOAD_PROFILE = exports.LOAD_PROFILE = 'load_profile';
+	var LOAD_PROJECTS = exports.LOAD_PROJECTS = 'load_projects';
 
 /***/ },
 /* 277 */
@@ -29389,6 +29390,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.getProjects = getProjects;
 	exports.getProfile = getProfile;
 
 	var _axios = __webpack_require__(280);
@@ -29403,66 +29405,19 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// //TODO rename this function
-	// export function fetchGithubMessage({location, language}) {
-	//     return function (dispatch) {
-	//         dispatch({
-	//             type: SET_LOCATION_LANG,
-	//             location,
-	//             language
-	//         })
-	//         axios.get(ROOT_URL + '/github/search',
-	//             {
-	//                 headers: {location: location, language: language}
-	//             }).then(response => {
-	//             const pagination = response.data.shift()
-	//             //TODO Write a test for this
-	//             const lastPage = pagination.links.last.split('page=')[1]
-	//             dispatch({
-	//                 type: SHOW_USER_DATA,
-	//                 pagination: pagination,
-	//                 payload: response.data,
-	//                 lastPage: lastPage
-	//             });
-	//
-	//         }).catch(function (response) {
-	//             console.log(response);
-	//         });
-	//     }
-	// }
-	//
-	// export function fetchPagination(data) {
-	//     return function (dispatch) {
-	//         axios.get(ROOT_URL + '/github/pagination', {
-	//             headers: {url: data.url}
-	//         }).then(response => {
-	//             dispatch({
-	//                 type: SHOW_USER_DATA,
-	//                 pagination: response.data.shift(),
-	//                 payload: response.data
-	//             })
-	//         }).catch(function (response) {
-	//             console.log(response)
-	//         });
-	//     }
-	// }
+	function getProjects() {
+	    console.log('in get projects');
 
-	// export function addToShortlist(user) {
-	//     return function (dispatch) {
-	//         axios.post("/addToShortList", {
-	//             userName: user.login,
-	//             email: user.email,
-	//             githubId:user.id
-	//         }).then(function (response) {
-	//             //TODO notify user of success
-	//             console.log(response)
-	//         }).catch(function (error) {
-	//             //TODO notify user of error
-	//             console.log(error);
-	//         })
-	//     }
-	// }
-
+	    return function (dispatch) {
+	        _axios2.default.get('/getprojects').then(function (response) {
+	            dispatch({
+	                type: _types.LOAD_PROJECTS,
+	                projects: response.data
+	            });
+	            console.log(response);
+	        });
+	    };
+	}
 
 	function getProfile() {
 	    return function (dispatch) {
@@ -48987,6 +48942,8 @@
 
 	var _NoticeBoard2 = _interopRequireDefault(_NoticeBoard);
 
+	var _actions = __webpack_require__(279);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49005,12 +48962,17 @@
 	    }
 
 	    _createClass(noticeboarContainer, [{
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.props.getProjects();
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_NoticeBoard2.default, null)
+	                _react2.default.createElement(_NoticeBoard2.default, { projects: this.props.projects })
 	            );
 	        }
 	    }]);
@@ -49020,11 +48982,11 @@
 
 	function mapStateToProps(state) {
 	    return {
-	        state: state
+	        projects: state.projects
 	    };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(noticeboarContainer);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { getProjects: _actions.getProjects })(noticeboarContainer);
 
 /***/ },
 /* 801 */
@@ -49060,6 +49022,21 @@
 	    }
 
 	    _createClass(NoticeBoard, [{
+	        key: 'renderProjects',
+	        value: function renderProjects() {
+	            if (this.props.projects) {
+	                return this.props.projects.map(function (project) {
+	                    return _react2.default.createElement(
+	                        'li',
+	                        null,
+	                        ' ',
+	                        project.name,
+	                        ' '
+	                    );
+	                });
+	            }
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            return _react2.default.createElement(
@@ -49069,6 +49046,11 @@
 	                    'h1',
 	                    null,
 	                    ' NoticeBoard '
+	                ),
+	                _react2.default.createElement(
+	                    'ol',
+	                    null,
+	                    this.renderProjects()
 	                )
 	            );
 	        }
@@ -49275,7 +49257,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _redux = __webpack_require__(179);
@@ -49284,10 +49266,15 @@
 
 	var _profile_reducer2 = _interopRequireDefault(_profile_reducer);
 
+	var _projects_reducer = __webpack_require__(807);
+
+	var _projects_reducer2 = _interopRequireDefault(_projects_reducer);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var rootReducer = (0, _redux.combineReducers)({
-	  profile: _profile_reducer2.default });
+	    profile: _profile_reducer2.default,
+	    projects: _projects_reducer2.default });
 
 	exports.default = rootReducer;
 
@@ -49308,6 +49295,29 @@
 	    switch (action.type) {
 	        case _types.LOAD_PROFILE:
 	            return action.payload;
+	    }
+	    return state;
+	};
+
+	var _types = __webpack_require__(276);
+
+/***/ },
+/* 807 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports.default = function () {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	    var action = arguments[1];
+
+	    switch (action.type) {
+	        case _types.LOAD_PROJECTS:
+	            return action.projects;
 	    }
 	    return state;
 	};

@@ -1,9 +1,9 @@
 const Authentication = require('./controllers/authentication');
 const Profile = require('./controllers/profile');
+const Projects = require('./controllers/projects');
 const User = require('./models/user');
 const path = require('path');
-const Project = require('./models/projects');
-const co = require('co');
+
 
 
 module.exports = function (app) {
@@ -15,35 +15,11 @@ module.exports = function (app) {
     app.get('/logout', Authentication.logout, function(req, res){
         res.sendFile('logged out')
     });
-    app.post('/test', function (req, res) {
-        console.log(req.body)
-        var newProject = new Project({
-            name : req.body.name
-        })
-
-        newProject.save(function(err){
-           if(err){
-               console.log(err);
-               res.sendStatus(503)
-           } else {
-               Project.find({}, function(err, docs){
-                   if(err){
-                       console.log(err)
-                       res.sendStatus(503)
-                   }
-                   console.log(docs)
-                   res.send('saved project')
-               })
-
-           }
-        });
-
-
-    });
-
-    app.get('/getprofile', Profile.getProfile)
+    app.post('/test', Projects.createNewProject);
+    app.get('/getprofile', Profile.getProfile);
+    app.get('/getprojects', Projects.getAll);
     app.get('*', Authentication.isAuthenticated, function (req, response) {
-            response.sendFile(path.join(__dirname, '/client/index.html'))
+            response.sendFile(path.join(__dirname, '/client/index.html'));
         }
     );
 }
