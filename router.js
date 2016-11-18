@@ -24,11 +24,15 @@ module.exports = function (app) {
         newProject.save(function(err){
            if(err){
                console.log(err);
+               res.sendStatus(503)
            } else {
                Project.find({}, function(err, docs){
-                   if(err){console.log(err)}
+                   if(err){
+                       console.log(err)
+                       res.sendStatus(503)
+                   }
                    console.log(docs)
-                   res.send(docs)
+                   res.send('saved project')
                })
 
            }
