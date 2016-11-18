@@ -16,7 +16,7 @@ module.exports = function (app) {
         res.sendFile('logged out')
     });
     app.post('/addnewproject', Projects.createNewProject);
-    app.get('/getprofile', Profile.getProfile);
+    app.get('/getprofile', Authentication.isAuthenticated,Profile.getProfile);
     app.get('/getprojects',Authentication.isAuthenticated, Projects.getAll);
     app.get('*', Authentication.isAuthenticated, function (req, response) {
             response.sendFile(path.join(__dirname, '/client/index.html'));
