@@ -1,17 +1,10 @@
-import { combineReducers } from 'redux'
-import { reducer as form } from 'redux-form'
-import userDetailReducer from './userdetail_reducer'
-import langLoc from './location_lang_reducer'
-import shortlist from './shortlist_reducer'
-import profile from './profile_reducer'
+import { combineReducers } from 'redux';
+import profile from './profile_reducer';
+import projects from './projects_reducer';
 
 
 const rootReducer = combineReducers({
-  form,
-  langLoc,
-  shortlist,
-  profile,
-  usersDetails : userDetailReducer
-  })
+    profile,
+    projects})
 
 export default rootReducer
