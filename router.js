@@ -18,7 +18,7 @@ module.exports = function (app) {
     app.post('/test', function (req, res) {
         console.log(req.body)
         var newProject = new Project({
-            name : req.body
+            name : req.body.name
         })
 
         newProject.save(function(err){
