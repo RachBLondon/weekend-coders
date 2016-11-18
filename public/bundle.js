@@ -87,7 +87,7 @@
 
 	var _add_project_container2 = _interopRequireDefault(_add_project_container);
 
-	var _reducers = __webpack_require__(804);
+	var _reducers = __webpack_require__(805);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -49121,10 +49121,15 @@
 	    _createClass(AddProjectContainer, [{
 	        key: 'render',
 	        value: function render() {
+	            var inputs = [{
+	                field: 'Name',
+	                placeholder: 'Rachel'
+	            }];
+
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_AddProject2.default, null)
+	                _react2.default.createElement(_AddProject2.default, { inputs: inputs })
 	            );
 	        }
 	    }]);
@@ -49156,6 +49161,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _Form = __webpack_require__(804);
+
+	var _Form2 = _interopRequireDefault(_Form);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49183,7 +49192,8 @@
 	                    'h1',
 	                    null,
 	                    ' Add Project '
-	                )
+	                ),
+	                _react2.default.createElement(_Form2.default, { inputs: this.props.inputs })
 	            );
 	        }
 	    }]);
@@ -49197,6 +49207,71 @@
 /* 804 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Form = function (_Component) {
+	    _inherits(Form, _Component);
+
+	    function Form() {
+	        _classCallCheck(this, Form);
+
+	        return _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).apply(this, arguments));
+	    }
+
+	    _createClass(Form, [{
+	        key: "renderInputs",
+	        value: function renderInputs() {
+	            return this.props.inputs.map(function (input) {
+	                return _react2.default.createElement(
+	                    "div",
+	                    { className: "input-group" },
+	                    _react2.default.createElement(
+	                        "span",
+	                        { className: "input-group-addon", id: input.field + '_id' },
+	                        input.field
+	                    ),
+	                    _react2.default.createElement("input", { type: "text", className: "form-control", placeholder: input.placeholder })
+	                );
+	            });
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            return _react2.default.createElement(
+	                "div",
+	                null,
+	                this.renderInputs()
+	            );
+	        }
+	    }]);
+
+	    return Form;
+	}(_react.Component);
+
+	exports.default = Form;
+
+/***/ },
+/* 805 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -49205,7 +49280,7 @@
 
 	var _redux = __webpack_require__(179);
 
-	var _profile_reducer = __webpack_require__(805);
+	var _profile_reducer = __webpack_require__(806);
 
 	var _profile_reducer2 = _interopRequireDefault(_profile_reducer);
 
@@ -49217,7 +49292,7 @@
 	exports.default = rootReducer;
 
 /***/ },
-/* 805 */
+/* 806 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

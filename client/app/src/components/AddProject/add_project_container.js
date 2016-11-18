@@ -3,9 +3,18 @@ import { connect } from 'react-redux'
 import AddProject from './AddProject'
 
 class AddProjectContainer extends Component {
+
+
     render() {
+        const inputs = [
+            {
+                field : 'Name',
+                placeholder : 'Rachel'
+            }
+        ]
+
         return ( <div>
-                    <AddProject />
+                    <AddProject inputs={inputs} />
                 </div>)
         }
 }

@@ -3,7 +3,7 @@ const User = require('./../models/user')
 const urlParse = require('./../utils/query_string_parser')
 const env = require('env2')('.env')
 const jwt = require('jwt-simple')
-var Promise = require('es6-promise').Promise
+const Promise = require('es6-promise').Promise
 
 
 const tokenForUser = function (user, linkedinAccessToken) {
