@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux'
-import AddProject from './AddProject'
+import { connect } from 'react-redux';
+import AddProject from './AddProject';
+import {addNameToState} from './../../actions';
 
 class AddProjectContainer extends Component {
 
@@ -9,7 +10,11 @@ class AddProjectContainer extends Component {
         const inputs = [
             {
                 field : 'Name',
-                placeholder : 'Rachel'
+                placeholder : 'Rachel',
+                handleChange : (event)=>{
+                  this.props.addNameToState(event.target.value);
+                }
+
             }
         ]
 
@@ -25,4 +30,4 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps) (AddProjectContainer)
+export default connect(mapStateToProps, {addNameToState}) (AddProjectContainer)

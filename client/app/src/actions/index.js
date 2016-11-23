@@ -2,7 +2,8 @@ import axios from 'axios';
 import {browserHistory} from 'react-router';
 import {
     LOAD_PROFILE,
-    LOAD_PROJECTS
+    LOAD_PROJECTS,
+    ADD_NAME_TO_STATE
 } from './types'
 import {ROOT_URL} from './../constants/host_url'
 
@@ -30,10 +31,19 @@ export function getProfile(){
                 dispatch({
                     type: LOAD_PROFILE,
                     payload : response.data
-                })
+                });
 
                 console.log(response)
-            })
+            });
     }
 }
 
+export function addNameToState(name){
+  console.log("in action", name);
+    return function(dispatch){
+      dispatch({
+        type : ADD_NAME_TO_STATE,
+        name : name
+      });
+    }
+}
