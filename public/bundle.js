@@ -29449,6 +29449,7 @@
 	exports.getProjects = getProjects;
 	exports.getProfile = getProfile;
 	exports.addNameToState = addNameToState;
+	exports.submitProject = submitProject;
 
 	var _axios = __webpack_require__(286);
 
@@ -29490,13 +29491,22 @@
 	}
 
 	function addNameToState(name) {
-	    console.log("in action", name);
 	    return function (dispatch) {
 	        dispatch({
 	            type: _types.ADD_NAME_TO_STATE,
 	            name: name
 	        });
 	    };
+	}
+
+	function submitProject(data) {
+	    console.log(data);
+	    _axios2.default.post('/addnewproject', {
+	        "name": data
+	    }).then(function (response) {
+
+	        console.log(response);
+	    });
 	}
 
 /***/ },
@@ -47628,6 +47638,12 @@
 	    }
 
 	    _createClass(AddProjectContainer, [{
+	        key: 'handleSubmit',
+	        value: function handleSubmit() {
+	            // console.log("in handleS", this.props);
+	            this.props.submitProject(this.props.state.newProject);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _this2 = this;
@@ -47644,7 +47660,10 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_AddProject2.default, { inputs: inputs })
+	                _react2.default.createElement(_AddProject2.default, {
+	                    inputs: inputs,
+	                    submitClick: this.handleSubmit.bind(this)
+	                })
 	            );
 	        }
 	    }]);
@@ -47658,7 +47677,8 @@
 	    };
 	}
 
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, { addNameToState: _actions.addNameToState })(AddProjectContainer);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, { addNameToState: _actions.addNameToState,
+	    submitProject: _actions.submitProject })(AddProjectContainer);
 
 /***/ },
 /* 729 */
@@ -47714,7 +47734,7 @@
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-8' },
-	                        _react2.default.createElement(_Form2.default, { inputs: this.props.inputs })
+	                        _react2.default.createElement(_Form2.default, { inputs: this.props.inputs, submitClick: this.props.submitClick })
 	                    ),
 	                    _react2.default.createElement('div', { className: 'col-md-4' })
 	                )
@@ -47766,14 +47786,6 @@
 
 	    _createClass(Form, [{
 	        key: 'renderInputs',
-
-
-	        // handleChange(){
-	        //   console.log(this.props)
-	        //   const name = ReactDOM.findDOMNode(this.refs.name1).value;
-	        //   this.props.handleChange(name);
-	        // }
-
 	        value: function renderInputs() {
 
 	            return this.props.inputs.map(function (input, i) {
@@ -47792,10 +47804,16 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            console.log("jahfjdh", this.props);
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                this.renderInputs()
+	                this.renderInputs(),
+	                _react2.default.createElement(
+	                    'button',
+	                    { className: 'btn btn-default', onClick: this.props.submitClick },
+	                    'Submit'
+	                )
 	            );
 	        }
 	    }]);

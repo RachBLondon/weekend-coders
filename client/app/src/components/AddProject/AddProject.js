@@ -6,7 +6,7 @@ export default class AddProject extends Component {
                     <h1> Add Project </h1>
                     <div className="row">
                     <div className="col-md-8">
-                      <Form inputs={this.props.inputs}/>
+                      <Form inputs={this.props.inputs} submitClick={this.props.submitClick}/>
                     </div>
                     <div className="col-md-4">
                     </div>

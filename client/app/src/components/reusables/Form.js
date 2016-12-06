@@ -4,12 +4,6 @@ import ReactDOM from 'react-dom';
 export default class Form extends Component {
 
 
-    // handleChange(){
-    //   console.log(this.props)
-    //   const name = ReactDOM.findDOMNode(this.refs.name1).value;
-    //   this.props.handleChange(name);
-    // }
-
     renderInputs(){
 
         return this.props.inputs.map((input, i) => {
@@ -23,9 +17,11 @@ export default class Form extends Component {
     }
 
     render(){
+      console.log("jahfjdh", this.props)
         return (
             <div>
                 {this.renderInputs()}
+                <button className="btn btn-default" onClick={this.props.submitClick}>Submit</button>
             </div>
         )
     }

@@ -38,12 +38,24 @@ export function getProfile(){
     }
 }
 
+
 export function addNameToState(name){
-  console.log("in action", name);
     return function(dispatch){
       dispatch({
         type : ADD_NAME_TO_STATE,
         name : name
       });
     }
+}
+
+export function submitProject(data){
+  console.log(data);
+  axios.post('/addnewproject', {
+                "name": data
+                })
+      .then(response =>{
+
+
+          console.log(response)
+      });
 }

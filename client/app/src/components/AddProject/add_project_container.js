@@ -1,10 +1,17 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import AddProject from './AddProject';
-import {addNameToState} from './../../actions';
+
+import {  addNameToState,
+          submitProject
+        } from './../../actions';
 
 class AddProjectContainer extends Component {
 
+    handleSubmit(){
+        // console.log("in handleS", this.props);
+        this.props.submitProject(this.props.state.newProject);
+    }
 
     render() {
         const inputs = [
@@ -19,7 +26,10 @@ class AddProjectContainer extends Component {
         ]
 
         return ( <div>
-                    <AddProject inputs={inputs} />
+                    <AddProject
+                        inputs={inputs}
+                        submitClick={this.handleSubmit.bind(this)}
+                     />
                 </div>)
         }
 }
@@ -30,4 +40,7 @@ function mapStateToProps(state){
     }
 }
 
-export default connect(mapStateToProps, {addNameToState}) (AddProjectContainer)
+export default connect(mapStateToProps,
+        { addNameToState,
+          submitProject}
+        ) (AddProjectContainer)
